@@ -88,7 +88,7 @@ const Landing = () => {
 
                 <div className={'form'}>
                   <input
-                    className={'mt-5 input'}
+                    className={'input'}
                     type="text"
                     placeholder="Fantasy Tribe Name"
                     onChange={(e) =>
