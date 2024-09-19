@@ -8,6 +8,9 @@ export const CastawayCard = ({
   castaways,
 }) => {
   const [editCastaway, setEditCastaway] = useState(null);
+  const isEliminated = castaway.status === 'eliminated';
+
+  console.log({ isEliminated });
 
   const isAdmin = localStorage.getItem('role') === 'admin';
 
@@ -41,7 +44,11 @@ export const CastawayCard = ({
   };
 
   return (
-    <div className="rounded bg-slate-300 w-max text-slate-900 text-center flex flex-row p-5 m-5">
+    <div
+      className={`rounded ${
+        isEliminated ? 'bg-red-800' : 'bg-slate-300'
+      } w-max text-slate-900 text-center flex flex-row p-5 m-5`}
+    >
       <div className="flex flex-col justify-center items-center">
         {editCastaway && editCastaway._id === castaway._id ? (
           <div>
@@ -102,17 +109,31 @@ export const CastawayCard = ({
           </div>
         ) : (
           <>
-            <div className="text-lg bg-slate-900 rounded text-slate-300 px-5">
+            <div className={`text-lg bg-slate-900 rounded text-slate-300 px-5`}>
               {castaway.name}
             </div>
-            <div className="text-sm  italic">{castaway.tribe}</div>
+            <div
+              className={`rounded p-1 mt-1 text-sm ${
+                isEliminated
+                  ? 'bg-slate-300'
+                  : castaway.tribe === 'Lavo'
+                  ? 'bg-red-500'
+                  : castaway.tribe === 'Gata'
+                  ? 'bg-amber-400'
+                  : 'bg-blue-700'
+              } italic`}
+            >
+              {isEliminated ? 'ELIMINATED' : castaway.tribe}
+            </div>
             <div className="flex flex-row">
-              <button
-                className="boton-elegante my-5"
-                onClick={() => handleClick(castaway._id)}
-              >
-                Add
-              </button>
+              {!isEliminated && (
+                <button
+                  className="boton-elegante my-5"
+                  onClick={() => handleClick(castaway._id)}
+                >
+                  Add
+                </button>
+              )}
               {isAdmin && (
                 <button
                   className="boton-elegante my-5"
@@ -134,7 +155,7 @@ export const CastawayCard = ({
         )}
       </div>
       <img
-        className={'rounded pl-5'}
+        className={`rounded pl-5 ${isEliminated && 'eliminated'}`}
         src={castaway.imageUrl}
         alt={castaway.name}
         style={{ width: '150px', height: 'auto' }}

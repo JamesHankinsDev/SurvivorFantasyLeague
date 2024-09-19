@@ -20,7 +20,7 @@ export const TribeMemberCard = ({ castaway, handleClick }) => {
         </div>
       </div>
       _______
-      <div className={'flex text-start flex-col'}>
+      <div className={'text-start grid grid-cols-2 gap-2'}>
         <h1 className={'text-sm p-1'}>Pts: ###</h1>
         <h1 className={'text-sm p-1'}>VA: ###</h1>
         <h1 className={'text-sm p-1'}>VF: ###</h1>

@@ -210,3 +210,7 @@ input:focus ~ .input-border {
   background: #0e94a0;
   transform: translate(-50%, -5px);
 }
+
+.eliminated {
+  filter: grayscale(100%);
+}
