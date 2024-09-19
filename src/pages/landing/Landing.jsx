@@ -35,7 +35,6 @@ const Landing = () => {
         'http://localhost:5000/api/auth/login',
         user
       );
-      console.log({ response: response.data });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('role', response.data.role);
       localStorage.setItem('name', response.data.name);
@@ -59,9 +58,15 @@ const Landing = () => {
 
   return (
     <div className="columns-2 bg-slate-900 h-screen overflow-hidden">
-      <div className="bg-[url('https://c4.wallpaperflare.com/wallpaper/324/362/515/5bd32646a5b37-wallpaper-preview.jpg')] bg-cover h-full text-slate-950 font-extrabold flex items-center justify-center flex-col p-5">
-        <h1 className="text-5xl">Survivor Fantasy League </h1>
-        <h3 className="text-2xl">Fall, '24</h3>
+      <div className="bg-[url('https://media.istockphoto.com/id/467002425/photo/tiki-lamps-on-the-beach-of-hawaii.jpg?s=612x612&w=0&k=20&c=3MrGawPg8ZkrIgQwMNW4f9u9wEk7NS0IP76KFnCR_Rg=')] bg-cover h-full text-slate-300 font-extrabold flex items-center justify-center flex-col p-5 text-center">
+        <h1 className="text-5xl">
+          Survivor
+          <br />
+          Fantasy
+          <br />
+          League{' '}
+        </h1>
+        <h3 className="text-2xl mt-5">Fall, '24</h3>
       </div>
       <div className="bg-slate-900 text-slate-300 h-full flex flex-col justify-between items-center p-6">
         <div className={'flex justify-end w-full px-5'}>

@@ -101,7 +101,9 @@ input:focus ~ .input-border {
     Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   position: relative;
   width: 300px;
-  height: 384px;
+  height: auto;
+  margin: 15px 0;
+  padding: 15px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -119,25 +121,7 @@ input:focus ~ .input-border {
   border-radius: 20px 20px 0 0;
 }
 
-.card__avatar {
-  position: absolute;
-  width: 114px;
-  height: 114px;
-  background: var(--bg-color);
-  border-radius: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  top: calc(50% - 57px);
-}
-
-.card__avatar svg {
-  width: 100px;
-  height: 100px;
-}
-
 .card__title {
-  margin-top: 40px;
   font-weight: 500;
   font-size: 18px;
   color: var(--main-color);
@@ -177,4 +161,52 @@ input:focus ~ .input-border {
 .card__btn-solid:hover {
   background: var(--bg-color);
   color: var(--main-color);
+}
+
+/* From Uiverse.io by theleaderofenemy */
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  margin: 20px;
+}
+
+.text {
+  color: #efefef;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.tooltip {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+  background: #0b798a;
+  color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  transition: opacity 0.3s, visibility 0.3s, top 0.3s, background 0.3s;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent transparent #0b798a transparent;
+  transform: translateX(-50%);
+}
+
+.tooltip-container:hover .tooltip {
+  top: 120%;
+  opacity: 1;
+  visibility: visible;
+  background: #0e94a0;
+  transform: translate(-50%, -5px);
 }
