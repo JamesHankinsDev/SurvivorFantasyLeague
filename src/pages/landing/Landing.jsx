@@ -6,7 +6,7 @@ const Landing = () => {
   const [user, setUser] = useState('');
   const [token, setToken] = useState('');
   const [role, setRole] = useState('');
-  const [toLogin, setToLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   const navigate = useNavigate();
 
@@ -59,54 +59,59 @@ const Landing = () => {
 
   return (
     <div className="columns-2 bg-slate-900 h-screen overflow-hidden">
-      <div className="bg-[url('https://media.istockphoto.com/id/1372885868/photo/hawaii-luau-party-maui-fire-tiki-torches-with-open-flames-burning-at-sunset-sky-clouds-at.jpg?s=612x612&w=0&k=20&c=-RVqFPNNMvfRL7iYamGkl6zn8awfxadsKUmMvojE6-s=')] bg-cover h-full text-slate-950 font-extrabold flex items-center justify-center flex-col">
+      <div className="bg-[url('https://c4.wallpaperflare.com/wallpaper/324/362/515/5bd32646a5b37-wallpaper-preview.jpg')] bg-cover h-full text-slate-950 font-extrabold flex items-center justify-center flex-col p-5">
         <h1 className="text-5xl">Survivor Fantasy League </h1>
         <h3 className="text-2xl">Fall, '24</h3>
       </div>
-      <div className="bg-slate-300 h-full flex flex-col justify-between items-center">
+      <div className="bg-slate-900 text-slate-300 h-full flex flex-col justify-between items-center p-6">
         <div className={'flex justify-end w-full px-5'}>
-          {!toLogin ? (
-            <button onClick={() => setToLogin(true)}>Login</button>
+          {!showLogin ? (
+            <button onClick={() => setShowLogin(true)}>Login</button>
           ) : (
-            <button onClick={() => setToLogin(false)}>Sign Up</button>
+            <button onClick={() => setShowLogin(false)}>Sign Up</button>
           )}
         </div>
         <div
-          className={'grow flex flex-col justify-center items-center h-full'}
+          className={
+            'grow flex flex-col justify-center items-center h-full p-14'
+          }
         >
-          {toLogin ? (
+          {!showLogin ? (
             <>
               <form
-                className={'flex flex-col items-center px-14 text-center'}
+                className={'flex flex-col items-center text-center'}
                 onSubmit={register}
               >
-                <h2 className={'py-5'}>
-                  Register with a fantasy tribe to <br />
-                  compete for fantasy glory!
+                <h2 className={'py-5 text-xl font-bold'}>
+                  Register with a fantasy tribe to compete for fantasy glory!
                 </h2>
-                <input
-                  className={'my-5'}
-                  type="text"
-                  placeholder="Fantasy Tribe Name"
-                  onChange={(e) =>
-                    setUser({ ...user, username: e.target.value })
-                  }
-                />
-                <p className={'text-xs'}>
-                  **While you're password is encrypted, I can't gaurantee it is
-                  safe from external eyes. Please do not use a password you
-                  commonly use for sensitive info!
-                </p>
-                <input
-                  className={'my-5'}
-                  type="password"
-                  placeholder="Password"
-                  onChange={(e) =>
-                    setUser({ ...user, password: e.target.value })
-                  }
-                />
-                <select
-                  className={'my-5'}
+
+                <div className={'form'}>
+                  <input
+                    className={'mt-5 input'}
+                    type="text"
+                    placeholder="Fantasy Tribe Name"
+                    onChange={(e) =>
+                      setUser({ ...user, username: e.target.value })
+                    }
+                  />
+                  <span className={'input-border'}></span>
+                </div>
+
+                <div className={'form'}>
+                  <input
+                    className={'mt-5 input'}
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) =>
+                      setUser({ ...user, password: e.target.value })
+                    }
+                  />
+                  <span className={'input-border'}></span>
+                </div>
+
+                {/* <select
+                  className={'mt-5'}
                   onChange={(e) => setUser({ ...user, role: e.target.value })}
                 >
                   <option key="Option_1" value="user">
@@ -115,32 +120,49 @@ const Landing = () => {
                   <option key="Option_2" value="admin">
                     Admin
                   </option>
-                </select>
+                </select> */}
 
-                <button className={'my-5'} type="submit">
+                <button className={'mt-5 boton-elegante'} type="submit">
                   Register
                 </button>
               </form>
             </>
           ) : (
             <>
-              <form onSubmit={login}>
-                <h2>Login</h2>
-                <input
-                  type="text"
-                  placeholder="Username"
-                  onChange={(e) =>
-                    setUser({ ...user, username: e.target.value })
-                  }
-                />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  onChange={(e) =>
-                    setUser({ ...user, password: e.target.value })
-                  }
-                />
-                <button type="submit">Login</button>
+              <form
+                onSubmit={login}
+                className={'flex flex-col justify-center items-center'}
+              >
+                <h2 className={'py-5 text-xl font-bold text-center'}>
+                  Sign in with your existing Fantasy Tribe!
+                </h2>
+                <div className={'form'}>
+                  <input
+                    className={'input'}
+                    type="text"
+                    placeholder="Fantasy Tribe Name"
+                    onChange={(e) =>
+                      setUser({ ...user, username: e.target.value })
+                    }
+                  />
+                  <span className={'input-border'}></span>
+                </div>
+
+                <div className={'form'}>
+                  <input
+                    className={'input mt-5'}
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) =>
+                      setUser({ ...user, password: e.target.value })
+                    }
+                  />
+                  <span className={'input-border'}></span>
+                </div>
+
+                <button className={'boton-elegante mt-5'} type="submit">
+                  Login
+                </button>
               </form>
             </>
           )}
