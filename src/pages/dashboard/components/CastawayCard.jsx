@@ -125,6 +125,14 @@ export const CastawayCard = ({
             >
               {isEliminated ? 'ELIMINATED' : castaway.tribe}
             </div>
+            <div className={'text-start grid grid-cols-3 gap-2'}>
+              <h1 className={'text-sm'}>Pts: ###</h1>
+              <h1 className={'text-sm'}>VA: ###</h1>
+              <h1 className={'text-sm'}>VF: ###</h1>
+              <h1 className={'text-sm'}>CW: ###</h1>
+              <h1 className={'text-sm'}>IW: ###</h1>
+              <h1 className={'text-sm'}>IF: ###</h1>
+            </div>
             <div className="flex flex-row">
               {!isEliminated && (
                 <button
