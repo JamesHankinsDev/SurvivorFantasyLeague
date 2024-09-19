@@ -1,51 +1,45 @@
-export const TribeMemberCard = ({ castaway, handleClick }) => {
+export const TribeMemberCard = ({ castaway, handleClick, scoringRecords }) => {
   const isEliminated = castaway.status === 'eliminated';
+
+  scoringRecords = scoringRecords.filter(
+    (el) => el.castawayId === castaway._id
+  );
+  const totalPoints = scoringRecords.reduce((pts, sc) => pts + sc.points, 0);
+
   return (
-    <div className="rounded border-4 border-slate-300 w-full text-slate-300 text-center flex flex-col p-5 my-5 justify-center items-center">
-      <div className={'flex flex-row'}>
-        <div className="flex flex-col justify-center items-center">
-          <div className="text-lg bg-slate-300 rounded text-slate-900 px-5">
-            {castaway.name}
-          </div>
-          <div
-            className={`rounded p-1 mt-1 text-sm ${
-              isEliminated
-                ? 'bg-slate-300'
-                : castaway.tribe === 'Lavo'
-                ? 'bg-red-500'
-                : castaway.tribe === 'Gata'
-                ? 'bg-amber-400'
-                : 'bg-blue-700'
-            } italic`}
-          >
-            {castaway.tribe}
-          </div>
-        </div>
+    <div className={'rounded border-slate-300 border-2 w-full h-max my-2'}>
+      <div className={`text-xs bg-green-900 px-5 font-bold`}>
+        Points: {totalPoints}
       </div>
+
       <img
-        className={`rounded p-5 ${isEliminated && 'eliminated'}`}
+        className={`w-full ${isEliminated && 'eliminated'} `}
         src={castaway.imageUrl}
         alt={castaway.name}
-        style={{ width: '150px', height: 'auto' }}
+        style={{ width: 'auto', height: 'auto' }}
       />
-      <div className={'text-start grid grid-cols-3 gap-2'}>
-        <h1 className={'text-sm'}>Pts: ###</h1>
-        <h1 className={'text-sm'}>VA: ###</h1>
-        <h1 className={'text-sm'}>VF: ###</h1>
-        <h1 className={'text-sm'}>CW: ###</h1>
-        <h1 className={'text-sm'}>IW: ###</h1>
-        <h1 className={'text-sm'}>IF: ###</h1>
+      <div className="text-sm bg-slate-300 font-bold text-slate-900 px-5">
+        {castaway.name}
       </div>
-      <div className="pl-5">
-        <div className="flex flex-row">
-          <button
-            className="boton-elegante my-5"
-            onClick={() => handleClick(castaway._id)}
-          >
-            Drop
-          </button>
-        </div>
+      <div
+        className={`px-5 text-xs font-bold ${
+          isEliminated
+            ? 'bg-slate-300'
+            : castaway.tribe === 'Lavo'
+            ? 'bg-red-500'
+            : castaway.tribe === 'Gata'
+            ? 'bg-amber-400 text-slate-900'
+            : 'bg-blue-700'
+        } italic`}
+      >
+        {castaway.tribe}
       </div>
+      <button
+        className="w-full bg-slate-500 hover:bg-slate-600"
+        onClick={() => handleClick(castaway._id)}
+      >
+        Drop
+      </button>
     </div>
   );
 };

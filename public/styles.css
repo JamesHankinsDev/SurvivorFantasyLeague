@@ -492,11 +492,28 @@ video {
 [hidden] {
   display: none;
 }
+.m-5 {
+  margin: 1.25rem;
+}
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
 .mt-5 {
   margin-top: 1.25rem;
 }
 .flex {
   display: flex;
+}
+.grid {
+  display: grid;
 }
 .h-full {
   height: 100%;
@@ -504,8 +521,14 @@ video {
 .h-screen {
   height: 100vh;
 }
+.min-h-screen {
+  min-height: 100vh;
+}
 .w-full {
   width: 100%;
+}
+.w-max {
+  width: max-content;
 }
 .grow {
   flex-grow: 1;
@@ -513,8 +536,20 @@ video {
 .columns-2 {
   columns: 2;
 }
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.grid-cols-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.flex-row {
+  flex-direction: row;
+}
 .flex-col {
   flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
 }
 .items-center {
   align-items: center;
@@ -528,18 +563,60 @@ video {
 .justify-between {
   justify-content: space-between;
 }
+.justify-around {
+  justify-content: space-around;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.gap-4 {
+  gap: 1rem;
+}
 .overflow-hidden {
   overflow: hidden;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+.border-4 {
+  border-width: 4px;
+}
+.border-slate-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity));
+}
+.bg-amber-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(251 191 36 / var(--tw-bg-opacity));
+}
+.bg-blue-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity));
+}
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+}
+.bg-red-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(153 27 27 / var(--tw-bg-opacity));
+}
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
 }
 .bg-slate-900 {
   --tw-bg-opacity: 1;
   background-color: rgb(15 23 42 / var(--tw-bg-opacity));
 }
-.bg-\[url\(\'https\:\/\/c4\.wallpaperflare\.com\/wallpaper\/324\/362\/515\/5bd32646a5b37-wallpaper-preview\.jpg\'\)\] {
-  background-image: url('https://c4.wallpaperflare.com/wallpaper/324/362/515/5bd32646a5b37-wallpaper-preview.jpg');
+.bg-\[url\(\'https\:\/\/media\.istockphoto\.com\/id\/467002425\/photo\/tiki-lamps-on-the-beach-of-hawaii\.jpg\?s\=612x612\&w\=0\&k\=20\&c\=3MrGawPg8ZkrIgQwMNW4f9u9wEk7NS0IP76KFnCR_Rg\=\'\)\] {
+  background-image: url('https://media.istockphoto.com/id/467002425/photo/tiki-lamps-on-the-beach-of-hawaii.jpg?s=612x612&w=0&k=20&c=3MrGawPg8ZkrIgQwMNW4f9u9wEk7NS0IP76KFnCR_Rg=');
 }
 .bg-cover {
   background-size: cover;
+}
+.p-1 {
+  padding: 0.25rem;
 }
 .p-14 {
   padding: 3.5rem;
@@ -558,8 +635,17 @@ video {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
 }
+.pl-5 {
+  padding-left: 1.25rem;
+}
+.pt-5 {
+  padding-top: 1.25rem;
+}
 .text-center {
   text-align: center;
+}
+.text-start {
+  text-align: start;
 }
 .text-2xl {
   font-size: 1.5rem;
@@ -573,6 +659,14 @@ video {
   font-size: 3rem;
   line-height: 1;
 }
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
@@ -583,11 +677,17 @@ video {
 .font-extrabold {
   font-weight: 800;
 }
+.italic {
+  font-style: italic;
+}
 .text-slate-300 {
   --tw-text-opacity: 1;
   color: rgb(203 213 225 / var(--tw-text-opacity));
 }
-.text-slate-950 {
+.text-slate-900 {
   --tw-text-opacity: 1;
-  color: rgb(2 6 23 / var(--tw-text-opacity));
+  color: rgb(15 23 42 / var(--tw-text-opacity));
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }

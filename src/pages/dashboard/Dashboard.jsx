@@ -16,6 +16,8 @@ const Dashboard = () => {
     imageUrl: '',
   });
   const [editCastaway, setEditCastaway] = useState(null);
+  const [scoringRecords, setScoringRecords] = useState([]);
+  const [myScore, setMyScore] = useState('');
 
   useEffect(() => {
     if (localStorage.getItem('name')) {
@@ -57,9 +59,11 @@ const Dashboard = () => {
           headers: { Authorization: localStorage.getItem('token') },
         }
       );
-      console.log({ response: response.data });
+
+      console.log({ myTeam: response.data });
       try {
         setMyTeam(response.data.castaways ?? null);
+        setMyScore(response.data.totalPoints);
       } catch {
         setMyTeam(null);
       }
@@ -141,17 +145,28 @@ const Dashboard = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchScoringRecords = async () => {
+      const response = await axios.get('http://localhost:5000/api/scoring', {
+        headers: { Authorization: localStorage.getItem('token') },
+      });
+      console.log('response.data: ', response.data);
+      setScoringRecords(response.data);
+    };
+    fetchScoringRecords();
+  }, []);
+
   return (
     <div className={'bg-slate-900 min-h-screen text-slate-300 p-5'}>
       <div className={'flex justify-between'}>
         <h1 className="text-3xl">Dashboard</h1>
+        <h1 className={'text-2xl fond-bold'}>{tribeName}</h1>
         <button onClick={() => logout()}>Log Out</button>
       </div>
       <hr />
       <div className={'flex flex-row justify-around items-center p-5'}>
-        <h1 className={'text-2xl fond-bold'}>{tribeName} |</h1>
         <div className="tooltip-container">
-          <span className="text">Pts: ###</span>
+          <span className="text">Pts: {myScore}</span>
           <span className="tooltip">
             <p className={'text-xsm'}>Total team points</p>
           </span>
@@ -208,13 +223,16 @@ const Dashboard = () => {
       <h1 className="text-xl fond-bold">Your Fantasy Tribe Members</h1>
       <hr />
       {myTeam ? (
-        <div className={'grid grid-cols-5 gap-4'}>
+        <div
+          className={'grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 gap-4'}
+        >
           {myTeam.map((id) => {
             const castaway = castaways.find((c) => c._id === id);
             return (
               <TribeMemberCard
                 castaway={castaway}
                 handleClick={dropCastawayFromTeam}
+                scoringRecords={scoringRecords}
                 key={`tribeMember__${castaway._id}`}
               />
             );
@@ -292,10 +310,12 @@ const Dashboard = () => {
         </>
       )}
       <hr />
-      <div className="flex justify-center items-center flex-wrap">
+      {/* <div className="flex justify-center items-center flex-wrap"> */}
+      <div className="grid lg:grid-cols-5 md:grid-cols-4 sm:gird-cols-2 gap-3">
         {castaways.map((c) => (
           <CastawayCard
             castaway={c}
+            scoringRecords={scoringRecords}
             handleClick={addCastawayToTeam}
             setCastaways={setCastaways}
             castaways={castaways}
