@@ -24,7 +24,7 @@ const Landing = () => {
 
   useEffect(() => {
     if (token) {
-      navigate('/home');
+      navigate('/castaways');
     }
   }, [token]);
 

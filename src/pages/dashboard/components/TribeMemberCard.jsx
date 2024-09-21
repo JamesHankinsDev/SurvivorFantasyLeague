@@ -1,3 +1,7 @@
+import * as React from 'react';
+import ArrowDown from '@mui/icons-material/ArrowDownward';
+import { Popover } from '@mui/material';
+
 export const TribeMemberCard = ({ castaway, handleClick, scoringRecords }) => {
   const isEliminated = castaway.status === 'eliminated';
 
@@ -6,11 +10,64 @@ export const TribeMemberCard = ({ castaway, handleClick, scoringRecords }) => {
   );
   const totalPoints = scoringRecords.reduce((pts, sc) => pts + sc.points, 0);
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleModalClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleModalClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
   return (
     <div className={'rounded border-slate-300 border-2 w-full h-max my-2'}>
       <div className={`text-xs bg-green-900 px-5 font-bold`}>
         Points: {totalPoints}
       </div>
+
+      <div
+        onClick={handleModalClick}
+        className={`text-xs bg-slate-500 hover:bg-slate-700 px-5 font-bold cursor-pointer`}
+      >
+        View Stats
+      </div>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleModalClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+      >
+        <table className="table-fixed">
+          <thead>
+            <tr>
+              <th className="pr-3">Votes For</th>
+              <th className="pr-3">Votes Against</th>
+              <th className="pr-3">Challenge Wins</th>
+              <th className="pr-3">Immunity Wins</th>
+              <th className="pr-3">Idols Found</th>
+              <th className="pr-3">Tribal Councils</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+      </Popover>
 
       <img
         className={`w-full ${isEliminated && 'eliminated'} `}
@@ -23,9 +80,7 @@ export const TribeMemberCard = ({ castaway, handleClick, scoringRecords }) => {
       </div>
       <div
         className={`px-5 text-xs font-bold ${
-          isEliminated
-            ? 'bg-slate-300'
-            : castaway.tribe === 'Lavo'
+          castaway.tribe === 'Lavo'
             ? 'bg-red-500'
             : castaway.tribe === 'Gata'
             ? 'bg-amber-400 text-slate-900'
@@ -35,10 +90,14 @@ export const TribeMemberCard = ({ castaway, handleClick, scoringRecords }) => {
         {castaway.tribe}
       </div>
       <button
-        className="w-full bg-slate-500 hover:bg-slate-600"
+        className={`w-full ${
+          isEliminated
+            ? 'bg-red-700 hover:bg-red-500'
+            : 'bg-slate-500 hover:bg-slate-600'
+        }`}
         onClick={() => handleClick(castaway._id)}
       >
-        Drop
+        {isEliminated && 'ELIMINATED'} Drop <ArrowDown />
       </button>
     </div>
   );

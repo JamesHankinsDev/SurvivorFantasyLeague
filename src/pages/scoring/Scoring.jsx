@@ -10,6 +10,21 @@ const Scoring = () => {
     week: '',
   });
   const [castaways, setCastaways] = useState([]);
+
+  const scoringMap = [
+    { code: 'VF', title: 'Vote For Eliminated Castaway' },
+    { code: 'VA', title: 'Vote Against' },
+    { code: 'CW', title: 'Challenge Win' },
+    { code: 'IW', title: 'Immunity Win' },
+    { code: 'IF', title: 'Idol Found' },
+    { code: 'EL', title: 'Eliminated' },
+    { code: 'TC', title: 'Tribal Council' },
+    { code: 'FM', title: 'Fire Mad' },
+    { code: 'Thrd', title: 'Third Place' },
+    { code: 'Scnd', title: 'Second Place' },
+    { code: 'Frst', title: 'First Place' },
+  ];
+
   useEffect(() => {
     const fetchCastaways = async () => {
       try {
@@ -32,7 +47,7 @@ const Scoring = () => {
       const response = await axios.get('http://localhost:5000/api/scoring', {
         headers: { Authorization: localStorage.getItem('token') },
       });
-      console.log('response.data: ', response.data);
+
       setScoringRecords(response.data);
     };
     fetchScoringRecords();
@@ -45,17 +60,13 @@ const Scoring = () => {
         const response = await axios.get('http://localhost:5000/api/scoring', {
           headers: { Authorization: localStorage.getItem('token') },
         });
-        console.log('response.data: ', response.data);
+
         setScoringRecords(response.data);
       };
       fetchScoringRecords();
       setRefetch(false);
     }
   }, [reFetch]);
-
-  useEffect(() => {
-    console.log({ scoringRecords });
-  }, [scoringRecords]);
 
   const addScoringRecord = async () => {
     try {
@@ -66,7 +77,6 @@ const Scoring = () => {
           headers: { Authorization: localStorage.getItem('token') },
         }
       );
-      //   setScoringRecords([...scoringRecords, response.data]);
       setNewScoringRecord({ castawayId: '', scoringEvent: '', week: '' });
       setRefetch(true);
     } catch (error) {
@@ -93,43 +103,49 @@ const Scoring = () => {
 
   return (
     <>
-      <h1>Scoring</h1>
-      {castaways.map((c) => {
-        return (
-          <h1 key={c._id}>
-            {c.name} | {c._id}
-          </h1>
-        );
-      })}
       <h1>Add Scoring Record</h1>
       <form
+        className={'flex flex-col'}
         onSubmit={(e) => {
           e.preventDefault();
           addScoringRecord();
         }}
       >
-        <input
-          type="text"
-          placeholder="Castaway ID"
-          value={newScoringRecord.castawayId}
-          onChange={(e) =>
+        <select
+          name="castaway"
+          id="castaway-select"
+          onChange={(e) => {
             setNewScoringRecord({
               ...newScoringRecord,
               castawayId: e.target.value,
-            })
-          }
-        />
-        <input
-          type="text"
-          placeholder="scoring event"
-          value={newScoringRecord.scoringEvent}
-          onChange={(e) =>
+            });
+          }}
+        >
+          {castaways.map((c) => {
+            return (
+              <option value={c._id}>
+                {c.name} | {c.tribe}
+              </option>
+            );
+          })}
+        </select>
+
+        <select
+          name="scoring_event"
+          id="scoring_event-select"
+          onChange={(e) => {
+            console.log(e.target.value);
             setNewScoringRecord({
               ...newScoringRecord,
               scoringEvent: e.target.value,
-            })
-          }
-        />
+            });
+          }}
+        >
+          {scoringMap.map((c) => {
+            return <option value={c.code}>{c.title}</option>;
+          })}
+        </select>
+
         <input
           type="number"
           placeholder="week"
@@ -141,23 +157,31 @@ const Scoring = () => {
             })
           }
         />
-        <button type="submit">Add Scoring Record</button>
+        <button className={'boton-elegante'} type="submit">
+          Add Scoring Record
+        </button>
       </form>
       <button onClick={() => console.log({ seeScoring: scoringRecords })}>
         See Scoring
       </button>
-      {scoringRecords.map((sc) => {
-        const name = castaways.find((el) => el._id === sc.castawayId).name;
+      {scoringRecords &&
+        scoringRecords.lengeth > 0 &&
+        scoringRecords.map((sc) => {
+          const name = castaways.find((el) => el._id === sc.castawayId).name;
 
-        return (
-          <>
-            <p>
-              {name}, {sc.scoringEvent}, {sc.points}
-            </p>
-            <button onClick={() => deleteScoringRecord(sc._id)}>Delete</button>
-          </>
-        );
-      })}
+          return (
+            <>
+              <p>
+                {name},{' '}
+                {scoringMap.find((el) => el.code === sc.scoringEvent).title},
+                Week {sc.week} | {sc.points}
+              </p>
+              <button onClick={() => deleteScoringRecord(sc._id)}>
+                Delete
+              </button>
+            </>
+          );
+        })}
     </>
   );
 };

@@ -29,7 +29,7 @@ const Dashboard = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     alert('Logged Out');
-    navigate('/');
+    // navigate('/');
   };
 
   const [castaways, setCastaways] = useState([]);
@@ -60,7 +60,6 @@ const Dashboard = () => {
         }
       );
 
-      console.log({ myTeam: response.data });
       try {
         setMyTeam(response.data.castaways ?? null);
         setMyScore(response.data.totalPoints);
@@ -112,6 +111,7 @@ const Dashboard = () => {
 
       setMessage('');
     } catch (err) {
+      console.error({ err });
       setMessage('Error dropping castaway');
     }
   };
@@ -150,7 +150,7 @@ const Dashboard = () => {
       const response = await axios.get('http://localhost:5000/api/scoring', {
         headers: { Authorization: localStorage.getItem('token') },
       });
-      console.log('response.data: ', response.data);
+
       setScoringRecords(response.data);
     };
     fetchScoringRecords();
@@ -160,61 +160,55 @@ const Dashboard = () => {
     <div className={'bg-slate-900 min-h-screen text-slate-300 p-5'}>
       <div className={'flex justify-between'}>
         <h1 className="text-3xl">Dashboard</h1>
-        <h1 className={'text-2xl fond-bold'}>{tribeName}</h1>
+        <h1 className={'text-2xl fond-bold'}>
+          {tribeName} | {myScore} Points
+        </h1>
         <button onClick={() => logout()}>Log Out</button>
       </div>
       <hr />
       <div className={'flex flex-row justify-around items-center p-5'}>
         <div className="tooltip-container">
-          <span className="text">Pts: {myScore}</span>
-          <span className="tooltip">
-            <p className={'text-xsm'}>Total team points</p>
-          </span>
-        </div>
-        <div className="tooltip-container">
           <span className="text">VA: ###</span>
           <span className="tooltip">
-            <p className={'text-xsm'}>
-              Total Votes Against your Tribe Members. This has no impact on your
-              total points.
-            </p>
+            <p className={'text-xsm'}>Total Votes Against your Tribe Members</p>
           </span>
         </div>
         <div className="tooltip-container">
           <span className="text">VF: ###</span>
           <span className="tooltip">
             <p className={'text-xsm'}>
-              Votes your Tribe has cast against eliminated Castaways | +2 per
-              vote.
+              Votes against eliminated Castaways | +2
             </p>
           </span>
         </div>
         <div className="tooltip-container">
           <span className="text">CW: ###</span>
           <span className="tooltip">
-            <p className={'text-xsm'}>
-              Fantasy Tribe Challenge Wins | +10 each
-            </p>
+            <p className={'text-xsm'}>Challenge Wins | +10</p>
           </span>
         </div>
         <div className="tooltip-container">
           <span className="text">IW: ###</span>
           <span className="tooltip">
-            <p className={'text-xsm'}>Individual Immunity Wins | +15 each</p>
+            <p className={'text-xsm'}>Immunity Wins | +15</p>
           </span>
         </div>
         <div className="tooltip-container">
           <span className="text">IF: ###</span>
           <span className="tooltip">
-            <p className={'text-xsm'}>Idols Found | +20 each</p>
+            <p className={'text-xsm'}>Idols Found | +20</p>
+          </span>
+        </div>
+        <div className="tooltip-container">
+          <span className="text">TC: ###</span>
+          <span className="tooltip">
+            <p className={'text-xsm'}>Tribal Councils | +5</p>
           </span>
         </div>
         <div className="tooltip-container">
           <span className="text">El: ###</span>
           <span className="tooltip">
-            <p className={'text-xsm'}>
-              Eliminated Fantasy Tribe Members | -10 each
-            </p>
+            <p className={'text-xsm'}>Eliminatatins | -10 each</p>
           </span>
         </div>
       </div>
@@ -224,17 +218,20 @@ const Dashboard = () => {
       <hr />
       {myTeam ? (
         <div
-          className={'grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 gap-4'}
+          className={
+            'grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 gap-4 my-5'
+          }
         >
           {myTeam.map((id) => {
             const castaway = castaways.find((c) => c._id === id);
             return (
-              <TribeMemberCard
-                castaway={castaway}
-                handleClick={dropCastawayFromTeam}
-                scoringRecords={scoringRecords}
-                key={`tribeMember__${castaway._id}`}
-              />
+              // <TribeMemberCard
+              //   castaway={castaway}
+              //   handleClick={dropCastawayFromTeam}
+              //   scoringRecords={scoringRecords}
+              //   key={`tribeMember__${castaway._id}`}
+              // />
+              <h1>hi</h1>
             );
           })}
         </div>
@@ -311,17 +308,19 @@ const Dashboard = () => {
       )}
       <hr />
       {/* <div className="flex justify-center items-center flex-wrap"> */}
-      <div className="grid lg:grid-cols-5 md:grid-cols-4 sm:gird-cols-2 gap-3">
-        {castaways.map((c) => (
-          <CastawayCard
-            castaway={c}
-            scoringRecords={scoringRecords}
-            handleClick={addCastawayToTeam}
-            setCastaways={setCastaways}
-            castaways={castaways}
-            key={`availableCastaways__${c._id}`}
-          />
-        ))}
+      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:gird-cols-2 gap-3 my-5">
+        {castaways.map((c) => {
+          return (
+            <CastawayCard
+              castaway={c}
+              scoringRecords={scoringRecords}
+              handleClick={addCastawayToTeam}
+              setCastaways={setCastaways}
+              castaways={castaways}
+              key={`availableCastaways__${c._id}`}
+            />
+          );
+        })}
       </div>
     </div>
   );
