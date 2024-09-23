@@ -3,37 +3,22 @@ import ArrowUpward from '@mui/icons-material/ArrowUpward';
 import ArrowDownward from '@mui/icons-material/ArrowDownward';
 import { Popover } from '@mui/material';
 import axios from 'axios';
-import { getTranslatedPoints } from '../utils/pointsHelper';
 
-export const CastawayCard = ({ castaway, handleClick, canAdd }) => {
+export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
   const viewOnlyCard = handleClick === null;
   const isEliminated = castaway.status === 'eliminated';
 
-  // const [scoringRecords, setScoringRecords] = React.useState([]);
-  const scoringList = getTranslatedPoints(castaway.scoringEventIds);
   const [isEditing, setIsEditing] = React.useState(false);
   const [editCastaway, setEditCastaway] = React.useState(castaway);
 
-  // React.useEffect(() => {
-  //   console.log({ castaway });
-  //   const fetchScoringRecords = async () => {
-  //     const response = await axios.get('http://localhost:5000/api/scoring', {
-  //       headers: { Authorization: localStorage.getItem('token') },
-  //     });
-
-  //     setScoringRecords(
-  //       response.data.filter((el) => el.castawayId === castaway._id)
-  //     );
-  //   };
-  //   fetchScoringRecords();
-  // }, []);
-
-  // const totalPoints = scoringRecords.reduce((pts, sc) => pts + sc.points, 0);
-
-  const totalPoints = castaway.scoringEventIds.reduce(
-    (pts, sc) => (pts += sc.points),
-    0
-  );
+  let totalPoints = castaway.scoringEventIds
+    .filter((sc) => {
+      if (week == null) {
+        return true;
+      }
+      return sc.week === week;
+    })
+    .reduce((pts, sc) => (pts += sc.points), 0);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -102,7 +87,7 @@ export const CastawayCard = ({ castaway, handleClick, canAdd }) => {
         </div>
       ) : (
         <div className={`text-md bg-green-900 px-5 rounded-t font-bold`}>
-          Points: {totalPoints}
+          {week ? `Week ${week} ` : 'Total '}Points: {totalPoints}
         </div>
       )}
 

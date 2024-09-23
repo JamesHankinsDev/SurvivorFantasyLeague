@@ -52,8 +52,6 @@ const Scoring = () => {
         headers: { Authorization: localStorage.getItem('token') },
       });
 
-      console.log('Scoring list: ', { response });
-
       setScoringRecords(response.data);
     };
     fetchScoringRecords();
@@ -74,12 +72,7 @@ const Scoring = () => {
     }
   }, [reFetch]);
 
-  useEffect(() => {
-    console.log({ newScoringRecord });
-  }, [newScoringRecord]);
-
   const addScoringRecord = async () => {
-    console.log('sending payload as: ', { newScoringRecord });
     try {
       const response = await axios.post(
         'http://localhost:5000/api/scoring',
@@ -176,8 +169,6 @@ const Scoring = () => {
         See Scoring
       </button>
       {scoringRecords.map((sc) => {
-        console.log('Scoring records are: ', sc);
-        // const name = castaways.find((el) => el._id === sc.castawayId).name;
         const { name } = sc.castawayId ?? '';
 
         return (

@@ -29,7 +29,6 @@ const Dashboard = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     alert('Logged Out');
-    // navigate('/');
   };
 
   const [castaways, setCastaways] = useState([]);

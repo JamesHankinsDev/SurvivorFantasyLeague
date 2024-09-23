@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { CastawayCard } from '../../components/CastawayCard';
+import { getMyTeamStats } from '../../utils/pointsHelper';
 
 const Leaderboard = () => {
   const [allTribes, setAllTribes] = useState([]);
@@ -14,11 +15,8 @@ const Leaderboard = () => {
       });
 
       const tribes = response.data.map((t) => {
-        const totalPoints = t.castaways.reduce((pts, c) => {
-          return (pts += c.scoringEventIds.reduce((p, sc) => {
-            return (p += sc.points);
-          }, 0));
-        }, 0);
+        const totalPoints = getMyTeamStats(t.fantasyTribes)[0][1].count;
+
         return { ...t, totalPoints };
       });
 
@@ -26,6 +24,7 @@ const Leaderboard = () => {
     };
     fetchAllTribes();
   }, []);
+
   return (
     <>
       <div className={'flex flex-row justify-between items-center'}>
@@ -89,7 +88,6 @@ const Leaderboard = () => {
                     Hide Tribe Members
                   </button>
                 </div>
-                {/* <hr className={'border-slate-300 m-2'} /> */}
                 <div
                   className={
                     'text-md text-slate-300 text-center italic text-sm'

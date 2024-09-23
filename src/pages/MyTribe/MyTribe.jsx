@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { CastawayCard } from '../../components/CastawayCard';
 import { StatBadge } from '../../components/StatBadge';
+import { getMyTeamStats } from '../../utils/pointsHelper';
 
 const MyTribe = () => {
   const [myTribe, setMyTribe] = useState([]);
@@ -10,19 +11,13 @@ const MyTribe = () => {
   const [activeTab, setActiveTab] = useState('myTribe');
   const [castaways, setCastaways] = useState([]);
   const [stats, setStats] = useState([]);
+  const [totalPoints, setTotalPoints] = useState(0);
 
   useEffect(() => {
     // Sample Stats
-    setStats([
-      { header: 'PTS', count: 39 },
-      { header: 'VF', count: 2 },
-      { header: 'VA', count: 3 },
-      { header: 'CW', count: 6 },
-      { header: 'IW', count: 1 },
-      { header: 'IF', count: 3 },
-      { header: 'EL', count: 1 },
-      { header: 'TC', count: 2 },
-    ]);
+    const pointHelperRes = getMyTeamStats(tribeHistory);
+    setStats(pointHelperRes);
+    setTotalPoints(pointHelperRes.totalPoints);
   }, []);
 
   useEffect(() => {
@@ -127,6 +122,8 @@ const MyTribe = () => {
         .castaways.map((c) => c._id);
 
       addDrops = currentTribe.filter((c) => !priorTribe.includes(c));
+    } else {
+      console.log('No Tribe History');
     }
 
     try {
@@ -138,16 +135,16 @@ const MyTribe = () => {
           myTribe.length === 4
         ) {
           alert('Only 1 Add/Drop per week!');
+        } else {
+          const response = await axios.post(
+            `http://localhost:5000/api/team/drop/${castawayId}`,
+            {},
+            {
+              headers: { Authorization: localStorage.getItem('token') },
+            }
+          );
+          setMyTribe(response.data.castaways);
         }
-      } else {
-        const response = await axios.post(
-          `http://localhost:5000/api/team/drop/${castawayId}`,
-          {},
-          {
-            headers: { Authorization: localStorage.getItem('token') },
-          }
-        );
-        setMyTribe(response.data.castaways);
       }
     } catch (err) {
       console.error({ err });
@@ -172,19 +169,20 @@ const MyTribe = () => {
         at 12:00 AM.
       </div>
       <hr className={'border-slate-900 mt-5'} />
-      {/* <select
+      <select
         value={targetWeek}
         onChange={(e) => setTargetWeek(e.target.value)}
       >
         <option value="1">My Fantasy Tribe | Week 1</option>
-        <option value="2">My Fantasy Trihe | Week 2</option>
-      </select> */}
+        <option value="2">My Fantasy Tribe | Week 2</option>
+        <option value="3">My Fantasy Tribe | Week 3</option>
+      </select>
       {myTribe ? (
         <div>
           <div className={'grid lg:grid-cols-8 grid-cols-4 gap-4 py-5'}>
-            {stats.map((st) => (
-              <StatBadge header={st.header} count={st.count} />
-            ))}
+            {stats.map((st) => {
+              return <StatBadge header={st[0]} count={st[1].count} />;
+            })}
           </div>
 
           <hr className={'border-slate-900 mb-5'} />
@@ -326,6 +324,7 @@ const MyTribe = () => {
                         {t.castaways.map((c) => {
                           return (
                             <CastawayCard
+                              week={t.week}
                               castaway={c}
                               handleClick={null}
                               key={`tribe_history__${c._id}`}
@@ -339,7 +338,9 @@ const MyTribe = () => {
               </div>
             )}
           </div>
-          {/* <button onClick={freezeTribeCastaways}>Freeze</button> */}
+          {localStorage.getItem('role') === 'admin' && (
+            <button onClick={freezeTribeCastaways}>Freeze</button>
+          )}
         </div>
       ) : (
         <div className={'text-center font-bold text-lg p-5'}>
