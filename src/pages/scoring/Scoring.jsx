@@ -6,7 +6,7 @@ const Scoring = () => {
   const [scoringRecords, setScoringRecords] = useState([]);
   const [newScoringRecord, setNewScoringRecord] = useState({
     castawayId: '',
-    scoringEvent: '',
+    scoringEvent: 'VF',
     week: '',
   });
   const [castaways, setCastaways] = useState([]);
@@ -35,6 +35,10 @@ const Scoring = () => {
           }
         );
         setCastaways(response.data);
+        setNewScoringRecord({
+          ...newScoringRecord,
+          castawayId: response.data[0]._id,
+        });
       } catch (err) {
         console.error('AAAAAHHHHHH: ', err);
       }
@@ -47,6 +51,8 @@ const Scoring = () => {
       const response = await axios.get('http://localhost:5000/api/scoring', {
         headers: { Authorization: localStorage.getItem('token') },
       });
+
+      console.log('Scoring list: ', { response });
 
       setScoringRecords(response.data);
     };
@@ -68,7 +74,12 @@ const Scoring = () => {
     }
   }, [reFetch]);
 
+  useEffect(() => {
+    console.log({ newScoringRecord });
+  }, [newScoringRecord]);
+
   const addScoringRecord = async () => {
+    console.log('sending payload as: ', { newScoringRecord });
     try {
       const response = await axios.post(
         'http://localhost:5000/api/scoring',
@@ -77,7 +88,7 @@ const Scoring = () => {
           headers: { Authorization: localStorage.getItem('token') },
         }
       );
-      setNewScoringRecord({ castawayId: '', scoringEvent: '', week: '' });
+      setNewScoringRecord({ castawayId: '', scoringEvent: 'VF', week: '' });
       setRefetch(true);
     } catch (error) {
       alert('Error adding castaway: ', error);
@@ -92,8 +103,8 @@ const Scoring = () => {
           headers: { Authorization: localStorage.getItem('token') },
         }
       );
-      //   setScoringRecords([...scoringRecords, response.data]);
-      //   setNewScoringRecord({ castawayId: '', scoringEvent: '', week: '' });
+      setScoringRecords([...scoringRecords, response.data]);
+      setNewScoringRecord({ castawayId: '', scoringEvent: '', week: '' });
       setRefetch(true);
     } catch (error) {
       console.error({ deleting: error });
@@ -164,24 +175,22 @@ const Scoring = () => {
       <button onClick={() => console.log({ seeScoring: scoringRecords })}>
         See Scoring
       </button>
-      {scoringRecords &&
-        scoringRecords.lengeth > 0 &&
-        scoringRecords.map((sc) => {
-          const name = castaways.find((el) => el._id === sc.castawayId).name;
+      {scoringRecords.map((sc) => {
+        console.log('Scoring records are: ', sc);
+        // const name = castaways.find((el) => el._id === sc.castawayId).name;
+        const { name } = sc.castawayId ?? '';
 
-          return (
-            <>
-              <p>
-                {name},{' '}
-                {scoringMap.find((el) => el.code === sc.scoringEvent).title},
-                Week {sc.week} | {sc.points}
-              </p>
-              <button onClick={() => deleteScoringRecord(sc._id)}>
-                Delete
-              </button>
-            </>
-          );
-        })}
+        return (
+          <>
+            <p>
+              {name},{' '}
+              {scoringMap.find((el) => el.code === sc.scoringEvent).title}, Week{' '}
+              {sc.week} | {sc.points}
+            </p>
+            <button onClick={() => deleteScoringRecord(sc._id)}>Delete</button>
+          </>
+        );
+      })}
     </>
   );
 };

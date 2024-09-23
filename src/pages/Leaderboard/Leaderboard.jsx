@@ -13,7 +13,16 @@ const Leaderboard = () => {
         headers: { Authorization: localStorage.getItem('token') },
       });
 
-      setAllTribes(response.data);
+      const tribes = response.data.map((t) => {
+        const totalPoints = t.castaways.reduce((pts, c) => {
+          return (pts += c.scoringEventIds.reduce((p, sc) => {
+            return (p += sc.points);
+          }, 0));
+        }, 0);
+        return { ...t, totalPoints };
+      });
+
+      setAllTribes(tribes);
     };
     fetchAllTribes();
   }, []);

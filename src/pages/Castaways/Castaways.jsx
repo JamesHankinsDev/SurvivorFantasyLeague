@@ -20,8 +20,6 @@ const Castaways = () => {
         }
       );
 
-      console.log({ res: response.data });
-
       const sortedCastaways = response.data.sort((a, b) => {
         var textA = a.tribe.toUpperCase();
         var textB = b.tribe.toUpperCase();

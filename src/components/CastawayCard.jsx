@@ -3,29 +3,37 @@ import ArrowUpward from '@mui/icons-material/ArrowUpward';
 import ArrowDownward from '@mui/icons-material/ArrowDownward';
 import { Popover } from '@mui/material';
 import axios from 'axios';
+import { getTranslatedPoints } from '../utils/pointsHelper';
 
 export const CastawayCard = ({ castaway, handleClick, canAdd }) => {
   const viewOnlyCard = handleClick === null;
   const isEliminated = castaway.status === 'eliminated';
 
-  const [scoringRecords, setScoringRecords] = React.useState([]);
+  // const [scoringRecords, setScoringRecords] = React.useState([]);
+  const scoringList = getTranslatedPoints(castaway.scoringEventIds);
   const [isEditing, setIsEditing] = React.useState(false);
   const [editCastaway, setEditCastaway] = React.useState(castaway);
 
-  React.useEffect(() => {
-    const fetchScoringRecords = async () => {
-      const response = await axios.get('http://localhost:5000/api/scoring', {
-        headers: { Authorization: localStorage.getItem('token') },
-      });
+  // React.useEffect(() => {
+  //   console.log({ castaway });
+  //   const fetchScoringRecords = async () => {
+  //     const response = await axios.get('http://localhost:5000/api/scoring', {
+  //       headers: { Authorization: localStorage.getItem('token') },
+  //     });
 
-      setScoringRecords(
-        response.data.filter((el) => el.castawayId === castaway._id)
-      );
-    };
-    fetchScoringRecords();
-  }, []);
+  //     setScoringRecords(
+  //       response.data.filter((el) => el.castawayId === castaway._id)
+  //     );
+  //   };
+  //   fetchScoringRecords();
+  // }, []);
 
-  const totalPoints = scoringRecords.reduce((pts, sc) => pts + sc.points, 0);
+  // const totalPoints = scoringRecords.reduce((pts, sc) => pts + sc.points, 0);
+
+  const totalPoints = castaway.scoringEventIds.reduce(
+    (pts, sc) => (pts += sc.points),
+    0
+  );
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -127,12 +135,48 @@ export const CastawayCard = ({ castaway, handleClick, canAdd }) => {
           </thead>
           <tbody>
             <tr>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
+              <td>
+                {
+                  castaway.scoringEventIds.filter((sc) => {
+                    return sc.scoringEvent === 'VF';
+                  }).length
+                }
+              </td>
+              <td>
+                {
+                  castaway.scoringEventIds.filter((sc) => {
+                    return sc.scoringEvent === 'VA';
+                  }).length
+                }
+              </td>
+              <td>
+                {
+                  castaway.scoringEventIds.filter((sc) => {
+                    return sc.scoringEvent === 'CW';
+                  }).length
+                }
+              </td>
+              <td>
+                {
+                  castaway.scoringEventIds.filter((sc) => {
+                    return sc.scoringEvent === 'IW';
+                  }).length
+                }
+              </td>
+              <td>
+                {
+                  castaway.scoringEventIds.filter((sc) => {
+                    return sc.scoringEvent === 'IF';
+                  }).length
+                }
+              </td>
+              <td>
+                {
+                  castaway.scoringEventIds.filter((sc) => {
+                    return sc.scoringEvent === 'TC';
+                  }).length
+                }
+              </td>
             </tr>
           </tbody>
         </table>
@@ -176,7 +220,7 @@ export const CastawayCard = ({ castaway, handleClick, canAdd }) => {
       ) : (
         <div
           className={`px-5 text-center text-xl font-bold ${
-            castaway.tribe === 'Lavo'
+            castaway.tribe === 'Luvo'
               ? 'bg-red-500'
               : castaway.tribe === 'Gata'
               ? 'bg-amber-400 text-slate-900'

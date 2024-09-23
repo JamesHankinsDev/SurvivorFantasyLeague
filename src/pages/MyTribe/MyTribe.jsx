@@ -94,8 +94,6 @@ const MyTribe = () => {
           }
         );
 
-        console.log({ retFromAdd: response.data.castaways });
-
         setMyTribe(response.data.castaways);
       }
     } catch (err) {
@@ -119,8 +117,6 @@ const MyTribe = () => {
   const dropCastawayFromTeam = async (castawayId) => {
     let addDrops;
 
-    console.log({ tribeHistory });
-
     if (tribeHistory && tribeHistory.length !== 0) {
       const lastWeek = tribeHistory
         .map((ft) => ft.week)
@@ -132,8 +128,6 @@ const MyTribe = () => {
 
       addDrops = currentTribe.filter((c) => !priorTribe.includes(c));
     }
-
-    console.log(tribeHistory.length !== 0);
 
     try {
       if (myTribe.length === 0) {
@@ -153,7 +147,6 @@ const MyTribe = () => {
             headers: { Authorization: localStorage.getItem('token') },
           }
         );
-        console.log({ retFromDrop: response.data });
         setMyTribe(response.data.castaways);
       }
     } catch (err) {
@@ -242,6 +235,7 @@ const MyTribe = () => {
                       return (
                         <CastawayCard
                           castaway={c}
+                          allCastaways={castaways}
                           handleClick={null}
                           key={`myTribe__${c._id}`}
                         />
