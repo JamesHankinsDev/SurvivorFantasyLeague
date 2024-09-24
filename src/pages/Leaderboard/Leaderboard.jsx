@@ -47,74 +47,76 @@ const Leaderboard = () => {
           </button>
         )}
       </div>
-      {allTribes.map((t) => (
-        <>
-          <div className={'flex flex-col bg-slate-600 p-5 my-2 rounded'}>
-            <div className={'flex flex-row justify-around items-center m-2'}>
-              <div className={'text-md text-slate-300'}>
-                Current Rank:
-                <div className={'text-5xl font-extrabold text-center'}>
-                  {allTribes.indexOf(t) + 1}
-                  {allTribes.indexOf(t) + 1 === 1
-                    ? 'st'
-                    : allTribes.indexOf(t) + 2
-                    ? 'nd'
-                    : allTribes.indexOf(t) + 1
-                    ? 'rd'
-                    : 'th'}
-                </div>
-              </div>
-              <div
-                className={
-                  'text-3xl font-bold bg-slate-300 text-slate-700 p-2 rounded'
-                }
-              >
-                {t.userId.username}
-              </div>
-              <div className={'text-md text-slate-300'}>
-                Total Points:
-                <div className={'text-5xl font-extrabold text-center'}>
-                  {t.totalPoints}
-                </div>
-              </div>
-            </div>
-            {showTribe === t._id || showAllTribes ? (
-              <>
-                <div className={'flex justify-center align-center mb-2'}>
-                  <button
-                    className={'boton-elegante'}
-                    onClick={() => setShowTribe(null)}
-                  >
-                    Hide Tribe Members
-                  </button>
+      {allTribes
+        .sort((a, b) => b.totalPoints - a.totalPoints)
+        .map((t) => (
+          <>
+            <div className={'flex flex-col bg-slate-600 p-5 my-2 rounded'}>
+              <div className={'flex flex-row justify-around items-center m-2'}>
+                <div className={'text-md text-slate-300'}>
+                  Current Rank:
+                  <div className={'text-5xl font-extrabold text-center'}>
+                    {allTribes.indexOf(t) + 1}
+                    {allTribes.indexOf(t) + 1 === 1
+                      ? 'st'
+                      : allTribes.indexOf(t) + 2
+                      ? 'nd'
+                      : allTribes.indexOf(t) + 1
+                      ? 'rd'
+                      : 'th'}
+                  </div>
                 </div>
                 <div
                   className={
-                    'text-md text-slate-300 text-center italic text-sm'
+                    'text-3xl font-bold bg-slate-300 text-slate-700 p-2 rounded'
                   }
                 >
-                  Current Tribe:
+                  {t.userId.username}
                 </div>
-                <hr className={'border-slate-300 m-3'} />
-                <div className={'grid grid-cols-5 gap-3'}>
-                  {t.castaways.map((c) => (
-                    <CastawayCard castaway={c} handleClick={null} />
-                  ))}
+                <div className={'text-md text-slate-300'}>
+                  Total Points:
+                  <div className={'text-5xl font-extrabold text-center'}>
+                    {t.totalPoints}
+                  </div>
                 </div>
-              </>
-            ) : (
-              <div className={'flex justify-center align-center'}>
-                <button
-                  className={'boton-elegante'}
-                  onClick={() => setShowTribe(t._id)}
-                >
-                  Show Tribe Members
-                </button>
               </div>
-            )}
-          </div>
-        </>
-      ))}
+              {showTribe === t._id || showAllTribes ? (
+                <>
+                  <div className={'flex justify-center align-center mb-2'}>
+                    <button
+                      className={'boton-elegante'}
+                      onClick={() => setShowTribe(null)}
+                    >
+                      Hide Tribe Members
+                    </button>
+                  </div>
+                  <div
+                    className={
+                      'text-md text-slate-300 text-center italic text-sm'
+                    }
+                  >
+                    Current Tribe:
+                  </div>
+                  <hr className={'border-slate-300 m-3'} />
+                  <div className={'grid grid-cols-5 gap-3'}>
+                    {t.castaways.map((c) => (
+                      <CastawayCard castaway={c} handleClick={null} />
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div className={'flex justify-center align-center'}>
+                  <button
+                    className={'boton-elegante'}
+                    onClick={() => setShowTribe(t._id)}
+                  >
+                    Show Tribe Members
+                  </button>
+                </div>
+              )}
+            </div>
+          </>
+        ))}
     </>
   );
 };

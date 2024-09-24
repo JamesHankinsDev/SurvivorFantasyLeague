@@ -15,9 +15,6 @@ const MyTribe = () => {
 
   useEffect(() => {
     // Sample Stats
-    const pointHelperRes = getMyTeamStats(tribeHistory);
-    setStats(pointHelperRes);
-    setTotalPoints(pointHelperRes.totalPoints);
   }, []);
 
   useEffect(() => {
@@ -32,6 +29,9 @@ const MyTribe = () => {
       try {
         setMyTribe(response.data.castaways ?? null);
         setTribeHistory(response.data.fantasyTribes);
+        const pointHelperRes = getMyTeamStats(response.data.fantasyTribes);
+        setStats(pointHelperRes);
+        setTotalPoints(pointHelperRes.totalPoints);
       } catch {
         setMyTribe(null);
       }
@@ -122,16 +122,16 @@ const MyTribe = () => {
         .castaways.map((c) => c._id);
 
       addDrops = currentTribe.filter((c) => !priorTribe.includes(c));
-    } else {
-      console.log('No Tribe History');
     }
 
     try {
       if (myTribe.length === 0) {
         alert('You do not have any active tribe members');
-      } else if (tribeHistory && tribeHistory.length !== 0) {
+      } else if (tribeHistory || tribeHistory.length === 0) {
         if (
-          (addDrops.length >= 1 && !addDrops.includes(castawayId)) ||
+          (tribeHistory.length > 0 &&
+            addDrops.length >= 1 &&
+            !addDrops.includes(castawayId)) ||
           myTribe.length === 4
         ) {
           alert('Only 1 Add/Drop per week!');
@@ -169,14 +169,24 @@ const MyTribe = () => {
         at 12:00 AM.
       </div>
       <hr className={'border-slate-900 mt-5'} />
-      <select
-        value={targetWeek}
-        onChange={(e) => setTargetWeek(e.target.value)}
-      >
-        <option value="1">My Fantasy Tribe | Week 1</option>
-        <option value="2">My Fantasy Tribe | Week 2</option>
-        <option value="3">My Fantasy Tribe | Week 3</option>
-      </select>
+      {localStorage.getItem('role') === 'admin' && (
+        <select
+          value={targetWeek}
+          onChange={(e) => setTargetWeek(e.target.value)}
+        >
+          <option value="1">My Fantasy Tribe | Week 1</option>
+          <option value="2">My Fantasy Tribe | Week 2</option>
+          <option value="3">My Fantasy Tribe | Week 3</option>
+          <option value="4">My Fantasy Tribe | Week 4</option>
+          <option value="5">My Fantasy Tribe | Week 5</option>
+          <option value="6">My Fantasy Tribe | Week 6</option>
+          <option value="7">My Fantasy Tribe | Week 7</option>
+          <option value="8">My Fantasy Tribe | Week 8</option>
+          <option value="9">My Fantasy Tribe | Week 9</option>
+          <option value="10">My Fantasy Tribe | Week 10</option>
+          <option value="11">My Fantasy Tribe | Week 11</option>
+        </select>
+      )}
       {myTribe ? (
         <div>
           <div className={'grid lg:grid-cols-8 grid-cols-4 gap-4 py-5'}>
@@ -339,7 +349,9 @@ const MyTribe = () => {
             )}
           </div>
           {localStorage.getItem('role') === 'admin' && (
-            <button onClick={freezeTribeCastaways}>Freeze</button>
+            <button className={'boton-elegante'} onClick={freezeTribeCastaways}>
+              Freeze All Tribes
+            </button>
           )}
         </div>
       ) : (

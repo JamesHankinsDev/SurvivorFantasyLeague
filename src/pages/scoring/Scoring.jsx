@@ -138,7 +138,6 @@ const Scoring = () => {
           name="scoring_event"
           id="scoring_event-select"
           onChange={(e) => {
-            console.log(e.target.value);
             setNewScoringRecord({
               ...newScoringRecord,
               scoringEvent: e.target.value,

@@ -110,6 +110,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
         <table className="table-fixed">
           <thead>
             <tr>
+              <th className="pr-3">Week</th>
               <th className="pr-3">Votes For</th>
               <th className="pr-3">Votes Against</th>
               <th className="pr-3">Challenge Wins</th>
@@ -120,45 +121,46 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
           </thead>
           <tbody>
             <tr>
+              <td>{1}</td>
               <td>
                 {
                   castaway.scoringEventIds.filter((sc) => {
-                    return sc.scoringEvent === 'VF';
+                    return sc.week === 1 && sc.scoringEvent === 'VF';
                   }).length
                 }
               </td>
               <td>
                 {
                   castaway.scoringEventIds.filter((sc) => {
-                    return sc.scoringEvent === 'VA';
+                    return sc.week === 1 && sc.scoringEvent === 'VA';
                   }).length
                 }
               </td>
               <td>
                 {
                   castaway.scoringEventIds.filter((sc) => {
-                    return sc.scoringEvent === 'CW';
+                    return sc.week === 1 && sc.scoringEvent === 'CW';
                   }).length
                 }
               </td>
               <td>
                 {
                   castaway.scoringEventIds.filter((sc) => {
-                    return sc.scoringEvent === 'IW';
+                    return sc.week === 1 && sc.scoringEvent === 'IW';
                   }).length
                 }
               </td>
               <td>
                 {
                   castaway.scoringEventIds.filter((sc) => {
-                    return sc.scoringEvent === 'IF';
+                    return sc.week === 1 && sc.scoringEvent === 'IF';
                   }).length
                 }
               </td>
               <td>
                 {
                   castaway.scoringEventIds.filter((sc) => {
-                    return sc.scoringEvent === 'TC';
+                    return sc.week === 1 && sc.scoringEvent === 'TC';
                   }).length
                 }
               </td>
@@ -236,29 +238,31 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
           )}
         </button>
       )}
-      {localStorage.getItem('role') === 'admin' && !isEditing ? (
-        <button
-          className={`w-full rounded-b bg-slate-900 text-slate-200`}
-          onClick={() => setIsEditing(true)}
-        >
-          Edit
-        </button>
-      ) : (
-        <button
-          className={`w-full rounded-b bg-slate-900 text-slate-200`}
-          onClick={() => setIsEditing(false)}
-        >
-          Cancel
-        </button>
-      )}
-      {isEditing && (
-        <button
-          className={`w-full rounded-b bg-slate-300 text-slate-900`}
-          onClick={updateCastaway}
-        >
-          Save
-        </button>
-      )}
+      {localStorage.getItem('role') === 'admin' &&
+        (!isEditing ? (
+          <button
+            className={`w-full rounded-b bg-slate-900 text-slate-200`}
+            onClick={() => setIsEditing(true)}
+          >
+            Edit
+          </button>
+        ) : (
+          <>
+            <button
+              className={`w-full rounded-b bg-slate-900 text-slate-200`}
+              onClick={() => setIsEditing(false)}
+            >
+              Cancel
+            </button>
+
+            <button
+              className={`w-full rounded-b bg-slate-300 text-slate-900`}
+              onClick={updateCastaway}
+            >
+              Save
+            </button>
+          </>
+        ))}
     </div>
   );
 };

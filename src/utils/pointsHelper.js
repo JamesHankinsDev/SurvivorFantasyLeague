@@ -36,6 +36,7 @@ export const getMyTeamStats = (scoring) => {
       TC: { count: 0 },
     },
   };
+  console.log({ scoring });
   res.pointsBreakdown.PTS.count = scoring
     .map((sc) =>
       sc.castaways
