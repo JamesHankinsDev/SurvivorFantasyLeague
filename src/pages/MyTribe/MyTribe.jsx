@@ -12,7 +12,6 @@ const MyTribe = () => {
   const [activeTab, setActiveTab] = useState('myTribe');
   const [castaways, setCastaways] = useState([]);
   const [stats, setStats] = useState([]);
-  const [totalPoints, setTotalPoints] = useState(0);
 
   useEffect(() => {
     // Sample Stats
@@ -30,7 +29,6 @@ const MyTribe = () => {
         setTribeHistory(response.data.fantasyTribes);
         const pointHelperRes = getMyTeamStats(response.data.fantasyTribes);
         setStats(pointHelperRes);
-        setTotalPoints(pointHelperRes.totalPoints);
       } catch {
         setMyTribe(null);
       }

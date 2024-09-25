@@ -37,7 +37,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
   const updateCastaway = async () => {
     const BASE_URI = getAPIURI();
     try {
-      const response = await axios.put(
+      await axios.put(
         `${BASE_URI}/api/admin/castaway/${editCastaway._id}`,
         editCastaway,
         {
@@ -50,18 +50,6 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
     } catch (err) {
       console.error({ edit: err });
       alert('Error updating castaway');
-    }
-  };
-
-  const deleteCastaway = async (id) => {
-    const BASE_URI = getAPIURI();
-    try {
-      await axios.delete(`${BASE_URI}/api/admin/castaway/${id}`, {
-        headers: { Authorization: localStorage.getItem('token') },
-      });
-      alert('deleted.');
-    } catch (err) {
-      alert('Error deleting castaway');
     }
   };
 

@@ -17,7 +17,7 @@ const Home = () => {
     if (urlPath) {
       setActiveTab(urlPath.substring(1));
     }
-  }, []);
+  }, [navigate, urlPath]);
 
   const logout = () => {
     localStorage.removeItem('token');

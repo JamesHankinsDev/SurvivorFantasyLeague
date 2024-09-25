@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getAPIURI } from '../../utils/API';
@@ -6,7 +6,6 @@ import { getAPIURI } from '../../utils/API';
 const Landing = () => {
   const [user, setUser] = useState('');
   const [token, setToken] = useState('');
-  const [role, setRole] = useState('');
   const [showLogin, setShowLogin] = useState(false);
 
   const navigate = useNavigate();
@@ -18,16 +17,13 @@ const Landing = () => {
     if (localStorage.getItem('user') !== null) {
       setUser(localStorage.getItem('user'));
     }
-    if (localStorage.getItem('role') !== null) {
-      setRole(localStorage.getItem('role'));
-    }
   }, []);
 
   useEffect(() => {
     if (token) {
       navigate('/castaways');
     }
-  }, [token]);
+  }, [token, navigate]);
 
   const login = async (e) => {
     e.preventDefault();
@@ -38,7 +34,6 @@ const Landing = () => {
       localStorage.setItem('role', response.data.role);
       localStorage.setItem('name', response.data.name);
       setToken(response.data.token);
-      setRole(response.data.role);
       alert('Login Successful');
     } catch (error) {
       alert('Error logging in!');

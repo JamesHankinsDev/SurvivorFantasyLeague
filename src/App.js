@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from './pages/landing/Landing';
-import Dashboard from './pages/dashboard/Dashboard';
 import Home from './pages/Home/Home';
 import Castaways from './pages/Castaways/Castaways';
 import MyTribe from './pages/MyTribe/MyTribe';
@@ -12,7 +11,6 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Landing />} />
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/" element={<Home />}>
           <Route path="castaways" element={<Castaways />} />
           <Route path="my-tribe" element={<MyTribe />} />

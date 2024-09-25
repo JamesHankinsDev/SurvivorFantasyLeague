@@ -43,7 +43,7 @@ const Scoring = () => {
       }
     };
     fetchCastaways();
-  }, []);
+  }, [newScoringRecord]);
 
   useEffect(() => {
     const BASE_URI = getAPIURI();
@@ -76,13 +76,9 @@ const Scoring = () => {
   const addScoringRecord = async () => {
     try {
       const BASE_URI = getAPIURI();
-      const response = await axios.post(
-        `${BASE_URI}/api/scoring`,
-        newScoringRecord,
-        {
-          headers: { Authorization: localStorage.getItem('token') },
-        }
-      );
+      await axios.post(`${BASE_URI}/api/scoring`, newScoringRecord, {
+        headers: { Authorization: localStorage.getItem('token') },
+      });
       setNewScoringRecord({ castawayId: '', scoringEvent: 'VF', week: '' });
       setRefetch(true);
     } catch (error) {
