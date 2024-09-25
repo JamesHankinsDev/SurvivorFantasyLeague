@@ -3,6 +3,7 @@ import ArrowUpward from '@mui/icons-material/ArrowUpward';
 import ArrowDownward from '@mui/icons-material/ArrowDownward';
 import { Popover } from '@mui/material';
 import axios from 'axios';
+import { getAPIURI } from '../utils/API';
 
 export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
   const viewOnlyCard = handleClick === null;
@@ -34,9 +35,10 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
   const id = open ? 'simple-popover' : undefined;
 
   const updateCastaway = async () => {
+    const BASE_URI = getAPIURI();
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/admin/castaway/${editCastaway._id}`,
+        `${BASE_URI}/api/admin/castaway/${editCastaway._id}`,
         editCastaway,
         {
           headers: { Authorization: localStorage.getItem('token') },
@@ -52,8 +54,9 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
   };
 
   const deleteCastaway = async (id) => {
+    const BASE_URI = getAPIURI();
     try {
-      await axios.delete(`http://localhost:5000/api/admin/castaway/${id}`, {
+      await axios.delete(`${BASE_URI}/api/admin/castaway/${id}`, {
         headers: { Authorization: localStorage.getItem('token') },
       });
       alert('deleted.');

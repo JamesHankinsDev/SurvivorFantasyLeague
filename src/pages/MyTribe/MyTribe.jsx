@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { CastawayCard } from '../../components/CastawayCard';
 import { StatBadge } from '../../components/StatBadge';
 import { getMyTeamStats } from '../../utils/pointsHelper';
+import { getAPIURI } from '../../utils/API';
 
 const MyTribe = () => {
   const [myTribe, setMyTribe] = useState([]);
@@ -19,12 +20,10 @@ const MyTribe = () => {
 
   useEffect(() => {
     const fetchMyTribe = async () => {
-      const response = await axios.get(
-        'http://localhost:5000/api/team/myTeam',
-        {
-          headers: { Authorization: localStorage.getItem('token') },
-        }
-      );
+      const BASE_URI = getAPIURI();
+      const response = await axios.get(`${BASE_URI}/api/team/myTeam`, {
+        headers: { Authorization: localStorage.getItem('token') },
+      });
 
       try {
         setMyTribe(response.data.castaways ?? null);
@@ -41,12 +40,10 @@ const MyTribe = () => {
 
   useEffect(() => {
     const fetchCastaways = async () => {
-      const response = await axios.get(
-        'http://localhost:5000/api/admin/castaways',
-        {
-          headers: { Authorization: localStorage.getItem('token') },
-        }
-      );
+      const BASE_URI = getAPIURI();
+      const response = await axios.get(`${BASE_URI}/api/admin/castaways`, {
+        headers: { Authorization: localStorage.getItem('token') },
+      });
 
       const sortedCastaways = response.data.sort((a, b) => {
         var textA = a.tribe.toUpperCase();
@@ -60,8 +57,9 @@ const MyTribe = () => {
   }, []);
 
   const freezeTribeCastaways = async () => {
+    const BASE_URI = getAPIURI();
     const response = await axios.post(
-      'http://localhost:5000/api/team/freeze',
+      `${BASE_URI}/api/team/freeze`,
       { targetWeek },
       {
         headers: { Authorization: localStorage.getItem('token') },
@@ -81,8 +79,9 @@ const MyTribe = () => {
       if (myTribe.length >= 5) {
         alert('You have already drafted 5 castaways for your tribe');
       } else {
+        const BASE_URI = getAPIURI();
         const response = await axios.post(
-          `http://localhost:5000/api/team/add/${castawayId}`,
+          `${BASE_URI}/api/team/add/${castawayId}`,
           {},
           {
             headers: { Authorization: localStorage.getItem('token') },
@@ -98,8 +97,9 @@ const MyTribe = () => {
 
   // Create a Tribe
   const createATribe = async () => {
+    const BASE_URI = getAPIURI();
     const response = await axios.post(
-      `http://localhost:5000/api/team`,
+      `${BASE_URI}/api/team`,
       {},
       {
         headers: { Authorization: localStorage.getItem('token') },
@@ -136,8 +136,9 @@ const MyTribe = () => {
         ) {
           alert('Only 1 Add/Drop per week!');
         } else {
+          const BASE_URI = getAPIURI();
           const response = await axios.post(
-            `http://localhost:5000/api/team/drop/${castawayId}`,
+            `${BASE_URI}/api/team/drop/${castawayId}`,
             {},
             {
               headers: { Authorization: localStorage.getItem('token') },
@@ -191,7 +192,13 @@ const MyTribe = () => {
         <div>
           <div className={'grid lg:grid-cols-8 grid-cols-4 gap-4 py-5'}>
             {stats.map((st) => {
-              return <StatBadge header={st[0]} count={st[1].count} />;
+              return (
+                <StatBadge
+                  key={`statbadge__${st[0]}`}
+                  header={st[0]}
+                  count={st[1].count}
+                />
+              );
             })}
           </div>
 
@@ -322,7 +329,7 @@ const MyTribe = () => {
                   ))}
                 {tribeHistory &&
                   tribeHistory.map((t) => (
-                    <>
+                    <div key={`my_tribe_history__${t._id}`}>
                       <span className={'text-slate-300 lg:text-lg font-bold'}>
                         Your Fantasy Tribe from week {t.week}
                       </span>
@@ -343,7 +350,7 @@ const MyTribe = () => {
                         })}
                       </div>
                       <hr />
-                    </>
+                    </div>
                   ))}
               </div>
             )}

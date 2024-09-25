@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import axios from 'axios';
 import { CastawayCard } from '../../components/CastawayCard';
+import { getAPIURI } from '../../utils/API';
 
 const Castaways = () => {
   const [castaways, setCastaways] = useState([]);
@@ -12,13 +13,11 @@ const Castaways = () => {
     imageUrl: '',
   });
   useEffect(() => {
+    const BASE_URI = getAPIURI();
     const fetchCastaways = async () => {
-      const response = await axios.get(
-        'http://localhost:5000/api/admin/castaways',
-        {
-          headers: { Authorization: localStorage.getItem('token') },
-        }
-      );
+      const response = await axios.get(`${BASE_URI}/api/admin/castaways`, {
+        headers: { Authorization: localStorage.getItem('token') },
+      });
 
       const sortedCastaways = response.data.sort((a, b) => {
         var textA = a.tribe.toUpperCase();
@@ -32,9 +31,10 @@ const Castaways = () => {
   }, []);
 
   const addCastaway = async () => {
+    const BASE_URI = getAPIURI();
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/admin/castaway',
+        `${BASE_URI}/api/admin/castaway`,
         newCastaway,
         {
           headers: { Authorization: localStorage.getItem('token') },

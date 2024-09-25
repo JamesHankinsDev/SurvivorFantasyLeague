@@ -17,7 +17,12 @@ function App() {
           <Route path="castaways" element={<Castaways />} />
           <Route path="my-tribe" element={<MyTribe />} />
           <Route path="leaderboard" element={<Leaderboard />} />
-          <Route path="ep-recap" element={<h1>Episode Recap</h1>} />
+          <Route
+            path="ep-recap"
+            element={
+              <h1>Sorry... I ran out of time. No recaps enabled yet.</h1>
+            }
+          />
           <Route path="log-scoring" element={<Scoring />} />
         </Route>
       </Routes>

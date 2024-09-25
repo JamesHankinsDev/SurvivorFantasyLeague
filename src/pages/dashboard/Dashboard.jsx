@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CastawayCard } from './components/CastawayCard';
 import { TribeMemberCard } from './components/TribeMemberCard';
 import axios from 'axios';
+import { getAPIURI } from '../../utils/API';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -37,13 +38,11 @@ const Dashboard = () => {
 
   // Get all castaways
   useEffect(() => {
+    const BASE_URI = getAPIURI();
     const fetchCastaways = async () => {
-      const response = await axios.get(
-        'http://localhost:5000/api/admin/castaways',
-        {
-          headers: { Authorization: localStorage.getItem('token') },
-        }
-      );
+      const response = await axios.get(`${BASE_URI}admin/castaways`, {
+        headers: { Authorization: localStorage.getItem('token') },
+      });
       setCastaways(response.data);
     };
     fetchCastaways();
@@ -51,13 +50,11 @@ const Dashboard = () => {
 
   // Get Logged In Users Team.
   useEffect(() => {
+    const BASE_URI = getAPIURI();
     const fetchMyTeam = async () => {
-      const response = await axios.get(
-        'http://localhost:5000/api/team/myTeam',
-        {
-          headers: { Authorization: localStorage.getItem('token') },
-        }
-      );
+      const response = await axios.get(`${BASE_URI}/api/team/myTeam`, {
+        headers: { Authorization: localStorage.getItem('token') },
+      });
 
       try {
         setMyTeam(response.data.castaways ?? null);
@@ -75,8 +72,9 @@ const Dashboard = () => {
       if (myTeam.length >= 5) {
         setMessage('You have already drafted 5 castaways for your tribe');
       }
+      const BASE_URI = getAPIURI();
       const response = await axios.post(
-        `http://localhost:5000/api/team/add/${castawayId}`,
+        `${BASE_URI}/api/team/add/${castawayId}`,
         {},
         {
           headers: { Authorization: localStorage.getItem('token') },
@@ -98,8 +96,9 @@ const Dashboard = () => {
       if (myTeam.length === 0) {
         setMessage('You do not have any active tribe members');
       }
+      const BASE_URI = getAPIURI();
       const response = await axios.post(
-        `http://localhost:5000/api/team/drop/${castawayId}`,
+        `${BASE_URI}/api/team/drop/${castawayId}`,
         {},
         {
           headers: { Authorization: localStorage.getItem('token') },
@@ -224,7 +223,7 @@ const Dashboard = () => {
           {myTeam.map((id) => {
             const castaway = castaways.find((c) => c._id === id);
             return (
-              // <TribeMemberCard
+              // <TribeMemberCardx
               //   castaway={castaway}
               //   handleClick={dropCastawayFromTeam}
               //   scoringRecords={scoringRecords}

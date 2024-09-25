@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { CastawayCard } from '../../components/CastawayCard';
 import { getMyTeamStats } from '../../utils/pointsHelper';
+import { getAPIURI } from '../../utils/API';
 
 const Leaderboard = () => {
   const [allTribes, setAllTribes] = useState([]);
@@ -9,8 +10,9 @@ const Leaderboard = () => {
   const [showAllTribes, setShowAllTribes] = useState(false);
 
   useEffect(() => {
+    const BASE_URI = getAPIURI();
     const fetchAllTribes = async () => {
-      const response = await axios.get('http://localhost:5000/api/team', {
+      const response = await axios.get(`${BASE_URI}/api/team`, {
         headers: { Authorization: localStorage.getItem('token') },
       });
 
@@ -50,7 +52,7 @@ const Leaderboard = () => {
       {allTribes
         .sort((a, b) => b.totalPoints - a.totalPoints)
         .map((t) => (
-          <>
+          <div key={`leaderboard__${t._id}`}>
             <div className={'flex flex-col bg-slate-600 p-5 my-2 rounded'}>
               <div className={'flex flex-row justify-around items-center m-2'}>
                 <div className={'text-md text-slate-300'}>
@@ -100,7 +102,11 @@ const Leaderboard = () => {
                   <hr className={'border-slate-300 m-3'} />
                   <div className={'grid grid-cols-5 gap-3'}>
                     {t.castaways.map((c) => (
-                      <CastawayCard castaway={c} handleClick={null} />
+                      <CastawayCard
+                        key={`leaderboard__castaways__${c._id}`}
+                        castaway={c}
+                        handleClick={null}
+                      />
                     ))}
                   </div>
                 </>
@@ -115,7 +121,7 @@ const Leaderboard = () => {
                 </div>
               )}
             </div>
-          </>
+          </div>
         ))}
     </>
   );

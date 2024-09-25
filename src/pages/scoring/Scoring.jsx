@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { getAPIURI } from '../../utils/API';
 
 const Scoring = () => {
   const [reFetch, setRefetch] = useState(true);
@@ -28,12 +29,10 @@ const Scoring = () => {
   useEffect(() => {
     const fetchCastaways = async () => {
       try {
-        const response = await axios.get(
-          'http://localhost:5000/api/admin/castaways',
-          {
-            headers: { Authorization: localStorage.getItem('token') },
-          }
-        );
+        const BASE_URI = getAPIURI();
+        const response = await axios.get(`${BASE_URI}/api/admin/castaways`, {
+          headers: { Authorization: localStorage.getItem('token') },
+        });
         setCastaways(response.data);
         setNewScoringRecord({
           ...newScoringRecord,
@@ -47,8 +46,9 @@ const Scoring = () => {
   }, []);
 
   useEffect(() => {
+    const BASE_URI = getAPIURI();
     const fetchScoringRecords = async () => {
-      const response = await axios.get('http://localhost:5000/api/scoring', {
+      const response = await axios.get(`${BASE_URI}/api/scoring`, {
         headers: { Authorization: localStorage.getItem('token') },
       });
 
@@ -60,8 +60,9 @@ const Scoring = () => {
 
   useEffect(() => {
     if (reFetch === true) {
+      const BASE_URI = getAPIURI();
       const fetchScoringRecords = async () => {
-        const response = await axios.get('http://localhost:5000/api/scoring', {
+        const response = await axios.get(`${BASE_URI}/api/scoring`, {
           headers: { Authorization: localStorage.getItem('token') },
         });
 
@@ -74,8 +75,9 @@ const Scoring = () => {
 
   const addScoringRecord = async () => {
     try {
+      const BASE_URI = getAPIURI();
       const response = await axios.post(
-        'http://localhost:5000/api/scoring',
+        `${BASE_URI}/api/scoring`,
         newScoringRecord,
         {
           headers: { Authorization: localStorage.getItem('token') },
@@ -90,12 +92,10 @@ const Scoring = () => {
 
   const deleteScoringRecord = async (id) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:5000/api/scoring/${id}`,
-        {
-          headers: { Authorization: localStorage.getItem('token') },
-        }
-      );
+      const BASE_URI = getAPIURI();
+      const response = await axios.delete(`${BASE_URI}/api/scoring/${id}`, {
+        headers: { Authorization: localStorage.getItem('token') },
+      });
       setScoringRecords([...scoringRecords, response.data]);
       setNewScoringRecord({ castawayId: '', scoringEvent: '', week: '' });
       setRefetch(true);
@@ -127,7 +127,7 @@ const Scoring = () => {
         >
           {castaways.map((c) => {
             return (
-              <option value={c._id}>
+              <option key={`castaway_options__${c._id}`} value={c._id}>
                 {c.name} | {c.tribe}
               </option>
             );
@@ -144,8 +144,12 @@ const Scoring = () => {
             });
           }}
         >
-          {scoringMap.map((c) => {
-            return <option value={c.code}>{c.title}</option>;
+          {scoringMap.map((c, i) => {
+            return (
+              <option key={`scoring_event_options__${i}`} value={c.code}>
+                {c.title}
+              </option>
+            );
           })}
         </select>
 
@@ -171,14 +175,14 @@ const Scoring = () => {
         const { name } = sc.castawayId ?? '';
 
         return (
-          <>
+          <div key={`scoring_record__${sc._id}`}>
             <p>
               {name},{' '}
               {scoringMap.find((el) => el.code === sc.scoringEvent).title}, Week{' '}
               {sc.week} | {sc.points}
             </p>
             <button onClick={() => deleteScoringRecord(sc._id)}>Delete</button>
-          </>
+          </div>
         );
       })}
     </>

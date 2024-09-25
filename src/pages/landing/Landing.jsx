@@ -1,6 +1,7 @@
 import react, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { getAPIURI } from '../../utils/API';
 
 const Landing = () => {
   const [user, setUser] = useState('');
@@ -30,11 +31,9 @@ const Landing = () => {
 
   const login = async (e) => {
     e.preventDefault();
+    const BASE_URI = getAPIURI();
     try {
-      const response = await axios.post(
-        'http://localhost:5000/api/auth/login',
-        user
-      );
+      const response = await axios.post(`${BASE_URI}/api/auth/login`, user);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('role', response.data.role);
       localStorage.setItem('name', response.data.name);
@@ -48,8 +47,9 @@ const Landing = () => {
 
   const register = async (e) => {
     e.preventDefault();
+    const BASE_URI = getAPIURI();
     try {
-      await axios.post('http://localhost:5000/api/auth/register', user);
+      await axios.post(`${BASE_URI}/api/auth/register`, user);
       alert('Registration successful');
     } catch (error) {
       alert('Error in registreation');
