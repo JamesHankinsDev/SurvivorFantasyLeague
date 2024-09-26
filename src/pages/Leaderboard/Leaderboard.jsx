@@ -61,9 +61,9 @@ const Leaderboard = () => {
                     {allTribes.indexOf(t) + 1}
                     {allTribes.indexOf(t) + 1 === 1
                       ? 'st'
-                      : allTribes.indexOf(t) + 2
+                      : allTribes.indexOf(t) + 1 === 2
                       ? 'nd'
-                      : allTribes.indexOf(t) + 1
+                      : allTribes.indexOf(t) + 1 === 3
                       ? 'rd'
                       : 'th'}
                   </div>

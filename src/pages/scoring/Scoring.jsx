@@ -79,7 +79,6 @@ const Scoring = () => {
       await axios.post(`${BASE_URI}/api/scoring`, newScoringRecord, {
         headers: { Authorization: localStorage.getItem('token') },
       });
-      setNewScoringRecord({ castawayId: '', scoringEvent: 'VF', week: '' });
       setRefetch(true);
     } catch (error) {
       alert('Error adding castaway: ', error);
@@ -93,7 +92,6 @@ const Scoring = () => {
         headers: { Authorization: localStorage.getItem('token') },
       });
       setScoringRecords([...scoringRecords, response.data]);
-      setNewScoringRecord({ castawayId: '', scoringEvent: '', week: '' });
       // setRefetch(true);
     } catch (error) {
       console.error({ deleting: error });
