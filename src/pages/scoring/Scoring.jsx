@@ -43,7 +43,7 @@ const Scoring = () => {
       }
     };
     fetchCastaways();
-  }, [newScoringRecord]);
+  }, []);
 
   useEffect(() => {
     const BASE_URI = getAPIURI();
@@ -94,7 +94,7 @@ const Scoring = () => {
       });
       setScoringRecords([...scoringRecords, response.data]);
       setNewScoringRecord({ castawayId: '', scoringEvent: '', week: '' });
-      setRefetch(true);
+      // setRefetch(true);
     } catch (error) {
       console.error({ deleting: error });
       alert('Error deleting castaway: ', error);

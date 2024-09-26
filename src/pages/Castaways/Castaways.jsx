@@ -1,34 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import axios from 'axios';
 import { CastawayCard } from '../../components/CastawayCard';
 import { getAPIURI } from '../../utils/API';
+import { useAuth } from '../../context/AuthContext';
+import { useCastaways } from '../../context/CastawayContext';
 
 const Castaways = () => {
-  const [castaways, setCastaways] = useState([]);
+  // const [castaways, setCastaways] = useState([]);
   const [newCastaway, setNewCastaway] = useState({
     name: '',
     tribe: '',
     season: '',
     imageUrl: '',
   });
-  useEffect(() => {
-    const BASE_URI = getAPIURI();
-    const fetchCastaways = async () => {
-      const response = await axios.get(`${BASE_URI}/api/admin/castaways`, {
-        headers: { Authorization: localStorage.getItem('token') },
-      });
-
-      const sortedCastaways = response.data.sort((a, b) => {
-        var textA = a.tribe.toUpperCase();
-        var textB = b.tribe.toUpperCase();
-        return textA < textB ? -1 : textA > textB ? 1 : 0;
-      });
-
-      setCastaways(sortedCastaways);
-    };
-    fetchCastaways();
-  }, []);
+  const { accessToken, userRole } = useAuth();
+  const {
+    cachedCastaways: castaways,
+    loading,
+    error,
+    refetch,
+  } = useCastaways();
 
   const addCastaway = async () => {
     const BASE_URI = getAPIURI();
@@ -37,10 +29,11 @@ const Castaways = () => {
         `${BASE_URI}/api/admin/castaway`,
         newCastaway,
         {
-          headers: { Authorization: localStorage.getItem('token') },
+          headers: { Authorization: accessToken },
         }
       );
-      setCastaways([...castaways, response.data]);
+      // setCastaways([...castaways, response.data]);
+      refetch();
       setNewCastaway({ name: '', tribe: '', season: '' });
     } catch (error) {
       alert('Error adding castaway: ', error);
@@ -63,15 +56,21 @@ const Castaways = () => {
           'grid lg:grid-cols-6 md:grid-cols-4 lg:gap-4 md:gap-2 gap-1 grid-cols-2 overflow-scroll'
         }
       >
-        {castaways.map((c) => (
-          <CastawayCard
-            castaway={c}
-            handleClick={null}
-            key={`castaways__${c._id}`}
-          />
-        ))}
+        {loading ? (
+          <h1>Loading</h1>
+        ) : error ? (
+          <h1>Error: {error}</h1>
+        ) : (
+          castaways.map((c) => (
+            <CastawayCard
+              castaway={c}
+              handleClick={null}
+              key={`castaways__${c._id}`}
+            />
+          ))
+        )}
       </div>
-      {localStorage.getItem('role') === 'admin' && (
+      {userRole === 'admin' && (
         <>
           <form
             onSubmit={(e) => {

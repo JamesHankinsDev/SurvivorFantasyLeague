@@ -1,41 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getAPIURI } from '../../utils/API';
+import { useAuth } from '../../context/AuthContext';
 
 const Landing = () => {
-  const [user, setUser] = useState('');
-  const [token, setToken] = useState('');
+  const [credentials, setCredentials] = useState('');
   const [showLogin, setShowLogin] = useState(false);
 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (localStorage.getItem('token') !== null) {
-      setToken(localStorage.getItem('token'));
-    }
-    if (localStorage.getItem('user') !== null) {
-      setUser(localStorage.getItem('user'));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (token) {
-      navigate('/castaways');
-    }
-  }, [token, navigate]);
-
-  const login = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const BASE_URI = getAPIURI();
     try {
-      const response = await axios.post(`${BASE_URI}/api/auth/login`, user);
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('role', response.data.role);
-      localStorage.setItem('name', response.data.name);
-      setToken(response.data.token);
+      const response = await axios.post(
+        `${BASE_URI}/api/auth/login`,
+        credentials
+      );
+      // console.log({ response });
+
+      login(response.data.name, response.data.role, response.data.token);
+      navigate('/castaways');
       alert('Login Successful');
     } catch (error) {
+      console.error({ error });
       alert('Error logging in!');
     }
   };
@@ -44,7 +34,7 @@ const Landing = () => {
     e.preventDefault();
     const BASE_URI = getAPIURI();
     try {
-      await axios.post(`${BASE_URI}/api/auth/register`, user);
+      await axios.post(`${BASE_URI}/api/auth/register`, credentials);
       alert('Registration successful');
     } catch (error) {
       alert('Error in registreation');
@@ -92,7 +82,10 @@ const Landing = () => {
                     type="text"
                     placeholder="Fantasy Tribe Name"
                     onChange={(e) =>
-                      setUser({ ...user, username: e.target.value })
+                      setCredentials({
+                        ...credentials,
+                        username: e.target.value,
+                      })
                     }
                   />
                   <span className={'input-border'}></span>
@@ -104,23 +97,14 @@ const Landing = () => {
                     type="password"
                     placeholder="Password"
                     onChange={(e) =>
-                      setUser({ ...user, password: e.target.value })
+                      setCredentials({
+                        ...credentials,
+                        password: e.target.value,
+                      })
                     }
                   />
                   <span className={'input-border'}></span>
                 </div>
-
-                {/* <select
-                  className={'mt-5'}
-                  onChange={(e) => setUser({ ...user, role: e.target.value })}
-                >
-                  <option key="Option_1" value="user">
-                    User
-                  </option>
-                  <option key="Option_2" value="admin">
-                    Admin
-                  </option>
-                </select> */}
 
                 <button className={'mt-5 boton-elegante'} type="submit">
                   Register
@@ -130,7 +114,7 @@ const Landing = () => {
           ) : (
             <>
               <form
-                onSubmit={login}
+                onSubmit={handleLogin}
                 className={'flex flex-col justify-center items-center'}
               >
                 <h2 className={'py-5 text-xl font-bold text-center'}>
@@ -142,7 +126,10 @@ const Landing = () => {
                     type="text"
                     placeholder="Fantasy Tribe Name"
                     onChange={(e) =>
-                      setUser({ ...user, username: e.target.value })
+                      setCredentials({
+                        ...credentials,
+                        username: e.target.value,
+                      })
                     }
                   />
                   <span className={'input-border'}></span>
@@ -154,7 +141,10 @@ const Landing = () => {
                     type="password"
                     placeholder="Password"
                     onChange={(e) =>
-                      setUser({ ...user, password: e.target.value })
+                      setCredentials({
+                        ...credentials,
+                        password: e.target.value,
+                      })
                     }
                   />
                   <span className={'input-border'}></span>

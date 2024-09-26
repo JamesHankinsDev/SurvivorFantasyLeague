@@ -4,18 +4,15 @@ import { CastawayCard } from '../../components/CastawayCard';
 import { StatBadge } from '../../components/StatBadge';
 import { getMyTeamStats } from '../../utils/pointsHelper';
 import { getAPIURI } from '../../utils/API';
+import { useCastaways } from '../../context/CastawayContext';
 
 const MyTribe = () => {
   const [myTribe, setMyTribe] = useState([]);
   const [tribeHistory, setTribeHistory] = useState([]);
   const [targetWeek, setTargetWeek] = useState(null);
   const [activeTab, setActiveTab] = useState('myTribe');
-  const [castaways, setCastaways] = useState([]);
+  // const [castaways, setCastaways] = useState([]);
   const [stats, setStats] = useState([]);
-
-  useEffect(() => {
-    // Sample Stats
-  }, []);
 
   useEffect(() => {
     const fetchMyTribe = async () => {
@@ -36,23 +33,12 @@ const MyTribe = () => {
     fetchMyTribe();
   }, []);
 
-  useEffect(() => {
-    const fetchCastaways = async () => {
-      const BASE_URI = getAPIURI();
-      const response = await axios.get(`${BASE_URI}/api/admin/castaways`, {
-        headers: { Authorization: localStorage.getItem('token') },
-      });
-
-      const sortedCastaways = response.data.sort((a, b) => {
-        var textA = a.tribe.toUpperCase();
-        var textB = b.tribe.toUpperCase();
-        return textA < textB ? -1 : textA > textB ? 1 : 0;
-      });
-
-      setCastaways(sortedCastaways);
-    };
-    fetchCastaways();
-  }, []);
+  const {
+    cachedCastaways: castaways,
+    loading,
+    error,
+    refetch,
+  } = useCastaways();
 
   const freezeTribeCastaways = async () => {
     const BASE_URI = getAPIURI();
@@ -296,21 +282,27 @@ const MyTribe = () => {
                     'grid lg:grid-cols-6 md:grid-cols-4 lg:gap-4 md:gap-2 gap-1 grid-cols-2 overflow-scroll'
                   }
                 >
-                  {castaways
-                    .filter((c) => c.status !== 'eliminated')
-                    .sort((a, b) => {
-                      var textA = a.name.toUpperCase();
-                      var textB = b.name.toUpperCase();
-                      return textA < textB ? -1 : textA > textB ? 1 : 0;
-                    })
-                    .map((c) => (
-                      <CastawayCard
-                        castaway={c}
-                        handleClick={addCastawayToTeam}
-                        canAdd={true}
-                        key={`editTribe_castaways__${c._id}`}
-                      />
-                    ))}
+                  {loading ? (
+                    <h1>Loading</h1>
+                  ) : error ? (
+                    <h1>Error: {error}</h1>
+                  ) : (
+                    castaways
+                      .filter((c) => c.status !== 'eliminated')
+                      .sort((a, b) => {
+                        var textA = a.name.toUpperCase();
+                        var textB = b.name.toUpperCase();
+                        return textA < textB ? -1 : textA > textB ? 1 : 0;
+                      })
+                      .map((c) => (
+                        <CastawayCard
+                          castaway={c}
+                          handleClick={addCastawayToTeam}
+                          canAdd={true}
+                          key={`editTribe_castaways__${c._id}`}
+                        />
+                      ))
+                  )}
                 </div>
               </div>
             ) : (

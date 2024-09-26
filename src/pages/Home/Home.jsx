@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useNavigate, useResolvedPath } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState('');
-
-  const tribeName = localStorage.getItem('name');
+  const { userName, userRole, logout } = useAuth();
 
   const navigate = useNavigate();
   const { pathname: urlPath } = useResolvedPath();
 
   useEffect(() => {
-    if (localStorage.getItem('token') === null) {
+    const accessToken = localStorage.getItem('token');
+    if (accessToken === null) {
       navigate('/Login');
     }
 
@@ -19,9 +20,8 @@ const Home = () => {
     }
   }, [navigate, urlPath]);
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
+  const handleLogout = () => {
+    logout();
     navigate('/Login');
   };
 
@@ -33,8 +33,8 @@ const Home = () => {
             'sticky top-0 w-screen bg-slate-900 text-slate-300 p-2 flex justify-between items-center border-b-4 border-slate-600 z-10'
           }
         >
-          <span className={'text-2xl font-bold'}>Welcome to {tribeName}</span>
-          <button className={'boton-elegante'} onClick={logout}>
+          <span className={'text-2xl font-bold'}>Welcome to {userName}</span>
+          <button className={'boton-elegante'} onClick={handleLogout}>
             Log Out
           </button>
         </div>
@@ -80,7 +80,7 @@ const Home = () => {
             >
               Recaps
             </Link>
-            {localStorage.getItem('role') === 'admin' && (
+            {userRole === 'admin' && (
               <Link
                 to="/log-scoring"
                 onClick={() => setActiveTab('log-scoring')}
