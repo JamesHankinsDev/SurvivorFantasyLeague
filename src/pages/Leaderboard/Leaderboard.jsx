@@ -52,9 +52,14 @@ const Leaderboard = () => {
       {allTribes
         .sort((a, b) => b.totalPoints - a.totalPoints)
         .map((t) => (
-          <div key={`leaderboard__${t._id}`}>
-            <div className={'flex flex-col bg-slate-600 p-5 my-2 rounded'}>
-              <div className={'flex flex-row justify-around items-center m-2'}>
+          <div
+            key={`leaderboard__${t._id}`}
+            className={`flex justify-center items-center w-full`}
+          >
+            <div
+              className={'flex flex-col bg-slate-600 p-5 my-2 rounded w-9/12'}
+            >
+              <div className={'flex flex-row justify-between items-center m-2'}>
                 <div className={'text-md text-slate-300'}>
                   Current Rank:
                   <div className={'text-5xl font-extrabold text-center'}>

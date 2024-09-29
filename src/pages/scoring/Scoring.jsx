@@ -33,7 +33,7 @@ const Scoring = () => {
         const response = await axios.get(`${BASE_URI}/api/admin/castaways`, {
           headers: { Authorization: localStorage.getItem('token') },
         });
-        setCastaways(response.data);
+        setCastaways(response.data.filter((c) => c.status !== 'eliminated'));
         setNewScoringRecord({
           ...newScoringRecord,
           castawayId: response.data[0]._id,

@@ -209,7 +209,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
         </div>
       )}
 
-      {!viewOnlyCard && !isEliminated && (
+      {!viewOnlyCard && (
         <button
           className={`w-full rounded-b ${
             canAdd
@@ -218,7 +218,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
           }`}
           onClick={() => handleClick(castaway._id)}
         >
-          {canAdd ? (
+          {canAdd && !isEliminated ? (
             <>
               Add <ArrowUpward />
             </>
@@ -230,7 +230,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
         </button>
       )}
       {localStorage.getItem('role') === 'admin' &&
-        (!isEditing ? (
+        (!isEditing && localStorage.getItem('role') === 'admin' ? (
           <button
             className={`w-full rounded-b bg-slate-900 text-slate-200`}
             onClick={() => setIsEditing(true)}
