@@ -1,43 +1,42 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { getAPIURI } from '../../utils/API';
+
 import { useAuth } from '../../context/AuthContext';
+
+import { API_URL } from '../../utils/constants';
+
+import { usePostWithToast } from '../../hooks/usePostWithToast';
+import { LandingForm } from './components/LandingForm';
 
 const Landing = () => {
   const [credentials, setCredentials] = useState('');
-  const [showLogin, setShowLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(true);
+
+  const { postData: postLogin } = usePostWithToast(API_URL.LOGIN);
+  const { postData: postRegister } = usePostWithToast(API_URL.REGISTER);
 
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const BASE_URI = getAPIURI();
     try {
-      const response = await axios.post(
-        `${BASE_URI}/api/auth/login`,
-        credentials
-      );
-      // console.log({ response });
-
-      login(response.data.name, response.data.role, response.data.token);
-      navigate('/castaways');
-      alert('Login Successful');
+      const { name, role, token } = await postLogin('LOGIN', credentials);
+      login(name, role, token);
+      navigate('/');
     } catch (error) {
       console.error({ error });
-      alert('Error logging in!');
     }
   };
 
-  const register = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    const BASE_URI = getAPIURI();
     try {
-      await axios.post(`${BASE_URI}/api/auth/register`, credentials);
-      alert('Registration successful');
+      const { name, role, token } = await postRegister('REGISTER', credentials);
+      login(name, role, token);
+      navigate('/');
     } catch (error) {
-      alert('Error in registreation');
+      console.error({ error });
     }
   };
 
@@ -67,94 +66,25 @@ const Landing = () => {
           }
         >
           {!showLogin ? (
-            <>
-              <form
-                className={'flex flex-col items-center text-center'}
-                onSubmit={register}
-              >
-                <h2 className={'py-5 text-xl font-bold'}>
-                  Register with a fantasy tribe to compete for fantasy glory!
-                </h2>
-
-                <div className={'form'}>
-                  <input
-                    className={'input'}
-                    type="text"
-                    placeholder="Fantasy Tribe Name"
-                    onChange={(e) =>
-                      setCredentials({
-                        ...credentials,
-                        username: e.target.value,
-                      })
-                    }
-                  />
-                  <span className={'input-border'}></span>
-                </div>
-
-                <div className={'form'}>
-                  <input
-                    className={'mt-5 input'}
-                    type="password"
-                    placeholder="Password"
-                    onChange={(e) =>
-                      setCredentials({
-                        ...credentials,
-                        password: e.target.value,
-                      })
-                    }
-                  />
-                  <span className={'input-border'}></span>
-                </div>
-
-                <button className={'mt-5 boton-elegante'} type="submit">
-                  Register
-                </button>
-              </form>
-            </>
+            <LandingForm
+              handleFormSubmit={handleRegister}
+              formTitle={'- Create your account -'}
+              formBody={
+                'Create an account to join a fantasy Survivor league and compete for fantasy glory!'
+              }
+              formCTA={'Register'}
+              setCredentials={setCredentials}
+            />
           ) : (
-            <>
-              <form
-                onSubmit={handleLogin}
-                className={'flex flex-col justify-center items-center'}
-              >
-                <h2 className={'py-5 text-xl font-bold text-center'}>
-                  Sign in with your existing Fantasy Tribe!
-                </h2>
-                <div className={'form'}>
-                  <input
-                    className={'input'}
-                    type="text"
-                    placeholder="Fantasy Tribe Name"
-                    onChange={(e) =>
-                      setCredentials({
-                        ...credentials,
-                        username: e.target.value,
-                      })
-                    }
-                  />
-                  <span className={'input-border'}></span>
-                </div>
-
-                <div className={'form'}>
-                  <input
-                    className={'input mt-5'}
-                    type="password"
-                    placeholder="Password"
-                    onChange={(e) =>
-                      setCredentials({
-                        ...credentials,
-                        password: e.target.value,
-                      })
-                    }
-                  />
-                  <span className={'input-border'}></span>
-                </div>
-
-                <button className={'boton-elegante mt-5'} type="submit">
-                  Login
-                </button>
-              </form>
-            </>
+            <LandingForm
+              handleFormSubmit={handleLogin}
+              formTitle={'- Welcome Back -'}
+              formBody={
+                'Sign in with your Tribe Name and password to get back into the Fantasy action!'
+              }
+              formCTA={'Login'}
+              setCredentials={setCredentials}
+            />
           )}
         </div>
       </div>

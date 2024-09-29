@@ -34,10 +34,10 @@ const Scoring = () => {
           headers: { Authorization: localStorage.getItem('token') },
         });
         setCastaways(response.data.filter((c) => c.status !== 'eliminated'));
-        setNewScoringRecord({
-          ...newScoringRecord,
+        setNewScoringRecord((ps) => ({
+          ...ps,
           castawayId: response.data[0]._id,
-        });
+        }));
       } catch (err) {
         console.error('AAAAAHHHHHH: ', err);
       }

@@ -25,13 +25,9 @@ const Castaways = () => {
   const addCastaway = async () => {
     const BASE_URI = getAPIURI();
     try {
-      const response = await axios.post(
-        `${BASE_URI}/api/admin/castaway`,
-        newCastaway,
-        {
-          headers: { Authorization: accessToken },
-        }
-      );
+      await axios.post(`${BASE_URI}/api/admin/castaway`, newCastaway, {
+        headers: { Authorization: accessToken },
+      });
       // setCastaways([...castaways, response.data]);
       refetch();
       setNewCastaway({ name: '', tribe: '', season: '' });

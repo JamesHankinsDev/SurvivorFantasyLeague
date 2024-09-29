@@ -1,12 +1,15 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Landing from './pages/landing/Landing';
-import Home from './pages/Home/Home';
-import Castaways from './pages/Castaways/Castaways';
-import MyTribe from './pages/MyTribe/MyTribe';
-import Leaderboard from './pages/Leaderboard/Leaderboard';
-import Scoring from './pages/scoring/Scoring';
+import { ToastContainer } from 'react-toastify';
+
 import { AuthProvider } from './context/AuthContext';
 import { CastawaysProvider } from './context/CastawayContext';
+
+import Castaways from './pages/Castaways/Castaways';
+import Home from './pages/Home/Home';
+import Landing from './pages/landing/Landing';
+import Leaderboard from './pages/Leaderboard/Leaderboard';
+import MyTribe from './pages/MyTribe/MyTribe';
+import Scoring from './pages/scoring/Scoring';
 
 function App() {
   return (
@@ -29,6 +32,15 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter>
+        <ToastContainer
+          position={'bottom-right'}
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          pauseOnHover
+          draggable
+        />
       </CastawaysProvider>
     </AuthProvider>
   );

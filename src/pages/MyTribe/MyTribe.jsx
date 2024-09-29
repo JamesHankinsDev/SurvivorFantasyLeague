@@ -37,7 +37,7 @@ const MyTribe = () => {
     cachedCastaways: castaways,
     loading,
     error,
-    refetch,
+    // refetch,
   } = useCastaways();
 
   const freezeTribeCastaways = async () => {
