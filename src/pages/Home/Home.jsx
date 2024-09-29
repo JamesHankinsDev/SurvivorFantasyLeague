@@ -3,7 +3,7 @@ import { Link, Outlet, useNavigate, useResolvedPath } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const Home = () => {
-  const [activeTab, setActiveTab] = useState('');
+  const [activeTab, setActiveTab] = useState('castaways');
   const { userName, userRole, logout } = useAuth();
 
   const navigate = useNavigate();
@@ -15,7 +15,8 @@ const Home = () => {
       navigate('/Login');
     }
 
-    if (urlPath) {
+    console.log({ urlPath });
+    if (urlPath && urlPath !== '/') {
       setActiveTab(urlPath.substring(1));
     }
   }, [navigate, urlPath]);
@@ -27,10 +28,10 @@ const Home = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-slate-900 flex flex-col">
+      <div className="min-h-screen h-screen max-w-screen w-screen bg-slate-900 flex flex-col overflow-x-hidden">
         <div
           className={
-            'sticky top-0 w-screen bg-slate-900 text-slate-300 p-2 flex justify-between items-center border-b-4 border-slate-600 z-10'
+            'sticky top-0 w-full bg-slate-900 text-slate-300 p-2 px-6 flex justify-between items-center border-b-4 border-slate-600 z-10'
           }
         >
           <span className={'text-2xl font-bold'}>Welcome to {userName}</span>
@@ -39,9 +40,9 @@ const Home = () => {
           </button>
         </div>
         <div className="flex flex-row">
-          <nav className="text-slate-300 bg-slate-900 p-4 lg:w-44 h-full flex flex-col inline text-sm sticky left-0 top-16">
+          <nav className="text-slate-300 bg-slate-900 p-4 w-44 flex flex-col inline text-sm sticky left-0 top-16">
             <Link
-              to="/castaways"
+              to="/"
               onClick={() => setActiveTab('castaways')}
               className={`hover:text-white px-4 py-1 my-2 ${
                 activeTab === 'castaways' &&

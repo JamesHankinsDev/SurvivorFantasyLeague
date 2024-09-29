@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// import { getAPIURI } from '../../utils/API';
 import { getAPIURI } from '../../utils/API';
 import axios from 'axios';
 

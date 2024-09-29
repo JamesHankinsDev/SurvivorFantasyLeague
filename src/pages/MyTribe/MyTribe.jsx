@@ -174,7 +174,9 @@ const MyTribe = () => {
       )}
       {myTribe ? (
         <div>
-          <div className={'grid lg:grid-cols-8 grid-cols-4 gap-4 py-5'}>
+          <div
+            className={'flex flex-row flex-wrap justify-center items-center'}
+          >
             {stats.map((st) => {
               return (
                 <StatBadge
@@ -225,7 +227,7 @@ const MyTribe = () => {
               <div>
                 <div
                   className={
-                    'grid lg:grid-cols-5 md:grid-cols-3 lg:gap-6 md:gap-3 gap-1 grid-cols-2 overflow-scroll'
+                    'flex flex-row flex-wrap justify-center items-center'
                   }
                 >
                   {myTribe &&
@@ -259,7 +261,7 @@ const MyTribe = () => {
                 </div>
                 <div
                   className={
-                    'grid lg:grid-cols-5 md:grid-cols-3 lg:gap-6 md:gap-3 gap-1 grid-cols-2 overflow-scroll'
+                    'flex flex-row flex-wrap justify-center items-center'
                   }
                 >
                   {myTribe &&
@@ -279,7 +281,7 @@ const MyTribe = () => {
                 </div>
                 <div
                   className={
-                    'grid lg:grid-cols-6 md:grid-cols-4 lg:gap-4 md:gap-2 gap-1 grid-cols-2 overflow-scroll'
+                    'flex flex-row flex-wrap justify-center items-center'
                   }
                 >
                   {loading ? (
@@ -325,7 +327,7 @@ const MyTribe = () => {
                       </span>
                       <div
                         className={
-                          'grid lg:grid-cols-5 md:grid-cols-3 lg:gap-6 md:gap-3 gap-1 grid-cols-2 overflow-scroll'
+                          'flex flex-row flex-wrap justify-center items-center'
                         }
                       >
                         {t.castaways.map((c) => {

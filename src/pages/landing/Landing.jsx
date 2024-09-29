@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../context/AuthContext';
@@ -7,23 +7,30 @@ import { API_URL } from '../../utils/constants';
 
 import { usePostWithToast } from '../../hooks/usePostWithToast';
 import { LandingForm } from './components/LandingForm';
+import useLogin from '../../hooks/Authentication/useLogin';
+import useRegister from '../../hooks/Authentication/useRegister';
 
 const Landing = () => {
   const [credentials, setCredentials] = useState('');
   const [showLogin, setShowLogin] = useState(true);
 
-  const { postData: postLogin } = usePostWithToast(API_URL.LOGIN);
-  const { postData: postRegister } = usePostWithToast(API_URL.REGISTER);
-
-  const { login } = useAuth();
   const navigate = useNavigate();
+
+  const {
+    handleLogin: loginHandler,
+    loading: loginLoading,
+    success: loginSuccess,
+  } = useLogin();
+  const {
+    handleRegister: registerHandler,
+    loading: registerLoading,
+    success: registerSuccess,
+  } = useRegister();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const { name, role, token } = await postLogin('LOGIN', credentials);
-      login(name, role, token);
-      navigate('/');
+      await loginHandler(credentials);
     } catch (error) {
       console.error({ error });
     }
@@ -32,13 +39,18 @@ const Landing = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const { name, role, token } = await postRegister('REGISTER', credentials);
-      login(name, role, token);
-      navigate('/');
+      await registerHandler(credentials);
     } catch (error) {
       console.error({ error });
     }
   };
+
+  useEffect(() => {
+    console.log({ loginSuccess, registerSuccess });
+    if (loginSuccess || registerSuccess) {
+      navigate('/');
+    }
+  }, [loginSuccess, registerSuccess, navigate]);
 
   return (
     <div className="columns-2 bg-slate-900 h-screen overflow-hidden">
@@ -66,15 +78,33 @@ const Landing = () => {
           }
         >
           {!showLogin ? (
-            <LandingForm
-              handleFormSubmit={handleRegister}
-              formTitle={'- Create your account -'}
-              formBody={
-                'Create an account to join a fantasy Survivor league and compete for fantasy glory!'
+            registerLoading ? (
+              <h1
+                className={
+                  'bg-slate-300 rounded p-4 font-bold text-slate-900 text-3xl animate-pulse'
+                }
+              >
+                PACKING YOUR BAGS FOR SURVIVOR FANTASY LEAGUE...
+              </h1>
+            ) : (
+              <LandingForm
+                handleFormSubmit={handleRegister}
+                formTitle={'- Create your account -'}
+                formBody={
+                  'Create an account to join a fantasy Survivor league and compete for fantasy glory!'
+                }
+                formCTA={'Register'}
+                setCredentials={setCredentials}
+              />
+            )
+          ) : loginLoading ? (
+            <h1
+              className={
+                'bg-slate-300 rounded p-4 font-bold text-slate-900 text-3xl animate-pulse'
               }
-              formCTA={'Register'}
-              setCredentials={setCredentials}
-            />
+            >
+              WAKING UP YOUR FANTASY TRIBE...
+            </h1>
           ) : (
             <LandingForm
               handleFormSubmit={handleLogin}

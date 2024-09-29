@@ -19,7 +19,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Landing />} />
             <Route path="/" element={<Home />}>
-              <Route path="castaways" element={<Castaways />} />
+              <Route path="" element={<Castaways />} />
               <Route path="my-tribe" element={<MyTribe />} />
               <Route path="leaderboard" element={<Leaderboard />} />
               <Route

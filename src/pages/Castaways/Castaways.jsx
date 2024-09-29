@@ -1,13 +1,19 @@
 import { useState } from 'react';
 
-import axios from 'axios';
 import { CastawayCard } from '../../components/CastawayCard';
-import { getAPIURI } from '../../utils/API';
 import { useAuth } from '../../context/AuthContext';
 import { useCastaways } from '../../context/CastawayContext';
+import { API_URL } from '../../utils/constants';
+import { usePostWithToast } from '../../hooks/usePostWithToast';
 
 const Castaways = () => {
-  // const [castaways, setCastaways] = useState([]);
+  const {
+    cachedCastaways: castaways,
+    loading,
+    error,
+    refetch,
+  } = useCastaways();
+  const { postData: postNewCastaway } = usePostWithToast(API_URL.CASTAWAY);
   const [newCastaway, setNewCastaway] = useState({
     name: '',
     tribe: '',
@@ -15,29 +21,20 @@ const Castaways = () => {
     imageUrl: '',
   });
   const { accessToken, userRole } = useAuth();
-  const {
-    cachedCastaways: castaways,
-    loading,
-    error,
-    refetch,
-  } = useCastaways();
 
-  const addCastaway = async () => {
-    const BASE_URI = getAPIURI();
-    try {
-      await axios.post(`${BASE_URI}/api/admin/castaway`, newCastaway, {
-        headers: { Authorization: accessToken },
+  const handleAddCastaway = async (e) => {
+    e.preventDefault();
+    await postNewCastaway('CASTAWAY_ADD', newCastaway, {
+      headers: { Authorization: accessToken },
+    })
+      .finally(refetch)
+      .catch((error) => {
+        console.error({ error });
       });
-      // setCastaways([...castaways, response.data]);
-      refetch();
-      setNewCastaway({ name: '', tribe: '', season: '' });
-    } catch (error) {
-      alert('Error adding castaway: ', error);
-    }
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col max-h-full max-w-full">
       <div className={`text-xl font-bold text-slate-900`}>
         Meet the Castaways of Survivor Season 47!
       </div>
@@ -47,16 +44,13 @@ const Castaways = () => {
         or click on "stats" to see a breakdown of their season.
       </div>
       <hr className={'border-slate-900 my-2'} />
-      <div
-        className={
-          'grid lg:grid-cols-6 md:grid-cols-4 lg:gap-4 md:gap-2 gap-1 grid-cols-2 overflow-scroll'
-        }
-      >
+      <div className={'flex flex-row flex-wrap justify-center items-center'}>
         {loading ? (
           <h1>Loading</h1>
         ) : error ? (
           <h1>Error: {error}</h1>
         ) : (
+          castaways &&
           castaways.map((c) => (
             <CastawayCard
               castaway={c}
@@ -68,12 +62,7 @@ const Castaways = () => {
       </div>
       {userRole === 'admin' && (
         <>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              addCastaway();
-            }}
-          >
+          <form onSubmit={handleAddCastaway}>
             <input
               type="text"
               placeholder="Name"

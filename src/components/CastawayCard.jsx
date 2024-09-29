@@ -54,7 +54,9 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
   };
 
   return (
-    <div className={`rounded border-slate-500 border-2 w-full h-max my-2`}>
+    <div
+      className={`rounded border-slate-500 border-2 w-full h-max my-2 w-1/6 mx-2 h-64 flex flex-col`}
+    >
       {isEditing ? (
         <div className="flex flex-row">
           <input
@@ -73,7 +75,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
           <div>Is Eliminated</div>
         </div>
       ) : isEliminated ? (
-        <div className="bg-red-600 px-5 text-slate-900 rounded-t text-center font-bold">
+        <div className="bg-red-600 px-5 text-slate-900 rounded-t text-center font-bold grow">
           Eliminated
         </div>
       ) : (
@@ -179,7 +181,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
           <span className={'input-border'}></span>
         </div>
       ) : (
-        <div className="lg:text-xl md:text-md text-center bg-slate-300 font-bold text-slate-900 px-5">
+        <div className="lg:text-xl md:text-md text-center bg-slate-300 font-bold text-slate-900 px-5 grow">
           {castaway.name}
         </div>
       )}

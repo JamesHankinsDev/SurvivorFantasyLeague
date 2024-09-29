@@ -12,13 +12,18 @@ export const AuthProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
 
   useEffect(() => {
-    //   // const token = localStorage.getItem('token');
-    //   // if (token) {
-    //   //   setAccessToken(token);
-    //   // }
-    //   if (!accessToken) {
-    //     // console.log(window.location.host);
-    //   }
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+    const name = localStorage.getItem('name');
+    if (token) {
+      setAccessToken(token);
+    }
+    if (role) {
+      setUserRole(role);
+    }
+    if (name) {
+      setUserName(name);
+    }
   }, []);
 
   const login = (userName, userRole, token) => {
@@ -26,6 +31,8 @@ export const AuthProvider = ({ children }) => {
     setUserRole(userRole);
     setAccessToken(token);
     localStorage.setItem('token', token);
+    localStorage.setItem('name', userName);
+    localStorage.setItem('role', userRole);
   };
 
   const logout = () => {
