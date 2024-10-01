@@ -55,7 +55,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
 
   return (
     <div
-      className={`rounded border-slate-500 border-2 w-full h-max my-2 w-1/6 mx-2 h-64 flex flex-col`}
+      className={`rounded border-slate-500 border-2 w-full h-max my-2 w-2/12 mx-2 h-64 flex flex-col`}
     >
       {isEditing ? (
         <div className="flex flex-row">

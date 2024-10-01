@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAuth } from '../../context/AuthContext';
-
-import { API_URL } from '../../utils/constants';
-
-import { usePostWithToast } from '../../hooks/usePostWithToast';
 import { LandingForm } from './components/LandingForm';
 import useLogin from '../../hooks/Authentication/useLogin';
 import useRegister from '../../hooks/Authentication/useRegister';
@@ -21,6 +16,7 @@ const Landing = () => {
     loading: loginLoading,
     success: loginSuccess,
   } = useLogin();
+
   const {
     handleRegister: registerHandler,
     loading: registerLoading,
