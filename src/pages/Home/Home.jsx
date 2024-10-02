@@ -15,7 +15,6 @@ const Home = () => {
       navigate('/Login');
     }
 
-    console.log({ urlPath });
     if (urlPath && urlPath !== '/') {
       setActiveTab(urlPath.substring(1));
     }

@@ -11,7 +11,6 @@ const MyTribe = () => {
   const [tribeHistory, setTribeHistory] = useState([]);
   const [targetWeek, setTargetWeek] = useState(null);
   const [activeTab, setActiveTab] = useState('myTribe');
-  // const [castaways, setCastaways] = useState([]);
   const [stats, setStats] = useState([]);
 
   useEffect(() => {

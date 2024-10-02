@@ -12,8 +12,6 @@ const useRegister = () => {
   const { postData: postLogin } = usePostWithToast(API_URL.REGISTER);
 
   const handleRegister = async (credentials) => {
-    console.log({ credentials });
-
     setLoading(true);
     try {
       const { name, role, token } = await postLogin('REGISTER', credentials);

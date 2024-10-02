@@ -1,37 +1,19 @@
-import { useState } from 'react';
-
+import { useEffect } from 'react';
 import { CastawayCard } from '../../components/CastawayCard';
 import { useAuth } from '../../context/AuthContext';
 import { useCastaways } from '../../context/CastawayContext';
-import { API_URL } from '../../utils/constants';
-import { usePostWithToast } from '../../hooks/usePostWithToast';
+import { AddCastaway } from './components/AddCastaway';
 
 const Castaways = () => {
-  const {
-    cachedCastaways: castaways,
-    loading,
-    error,
-    refetch,
-  } = useCastaways();
-  const { postData: postNewCastaway } = usePostWithToast(API_URL.CASTAWAY);
-  const [newCastaway, setNewCastaway] = useState({
-    name: '',
-    tribe: '',
-    season: '',
-    imageUrl: '',
-  });
-  const { accessToken, userRole } = useAuth();
+  const { cachedCastaways: castaways, loading, error } = useCastaways();
 
-  const handleAddCastaway = async (e) => {
-    e.preventDefault();
-    await postNewCastaway('CASTAWAY_ADD', newCastaway, {
-      headers: { Authorization: accessToken },
-    })
-      .finally(refetch)
-      .catch((error) => {
-        console.error({ error });
-      });
-  };
+  const { userRole } = useAuth();
+
+  useEffect(() => {
+    if (error) {
+      console.error({ CastawaysError: error });
+    }
+  }, [error]);
 
   return (
     <div className="flex flex-col max-h-full max-w-full">
@@ -47,10 +29,7 @@ const Castaways = () => {
       <div className={'flex flex-row flex-wrap justify-center items-center'}>
         {loading ? (
           <h1>Loading</h1>
-        ) : error ? (
-          <h1>Error: {error}</h1>
-        ) : (
-          castaways &&
+        ) : castaways !== null && castaways.length !== 0 ? (
           castaways.map((c) => (
             <CastawayCard
               castaway={c}
@@ -58,51 +37,13 @@ const Castaways = () => {
               key={`castaways__${c._id}`}
             />
           ))
+        ) : (
+          <></>
         )}
       </div>
       {userRole === 'admin' && (
         <>
-          <form onSubmit={handleAddCastaway}>
-            <input
-              type="text"
-              placeholder="Name"
-              value={newCastaway.name}
-              onChange={(e) =>
-                setNewCastaway({ ...newCastaway, name: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Tribe"
-              value={newCastaway.tribe}
-              onChange={(e) =>
-                setNewCastaway({
-                  ...newCastaway,
-                  tribe: e.target.value,
-                })
-              }
-            />
-            <input
-              type="number"
-              placeholder="Season"
-              value={newCastaway.season}
-              onChange={(e) =>
-                setNewCastaway({ ...newCastaway, season: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Image URL"
-              value={newCastaway.imageUrl}
-              onChange={(e) =>
-                setNewCastaway({ ...newCastaway, imageUrl: e.target.value })
-              }
-            />
-
-            <button type="submit" className="m-5 boton-elegante">
-              Add Castaway
-            </button>
-          </form>
+          <AddCastaway />
         </>
       )}
     </div>

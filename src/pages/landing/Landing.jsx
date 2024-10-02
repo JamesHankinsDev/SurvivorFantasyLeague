@@ -42,7 +42,6 @@ const Landing = () => {
   };
 
   useEffect(() => {
-    console.log({ loginSuccess, registerSuccess });
     if (loginSuccess || registerSuccess) {
       navigate('/');
     }

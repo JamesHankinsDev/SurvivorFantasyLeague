@@ -1,38 +1,21 @@
 import * as React from 'react';
 import ArrowUpward from '@mui/icons-material/ArrowUpward';
 import ArrowDownward from '@mui/icons-material/ArrowDownward';
-import { Popover } from '@mui/material';
+
 import axios from 'axios';
 import { getAPIURI } from '../utils/API';
+import { useState } from 'react';
+import { getCastawayTotalPoints } from '../utils/castawayUtils';
+import { CastawayModalView } from './CastawayCardComponents';
 
 export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
   const viewOnlyCard = handleClick === null;
   const isEliminated = castaway.status === 'eliminated';
 
-  const [isEditing, setIsEditing] = React.useState(false);
-  const [editCastaway, setEditCastaway] = React.useState(castaway);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editCastaway, setEditCastaway] = useState(castaway);
 
-  let totalPoints = castaway.scoringEventIds
-    .filter((sc) => {
-      if (week == null) {
-        return true;
-      }
-      return sc.week === week;
-    })
-    .reduce((pts, sc) => (pts += sc.points), 0);
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleModalClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleModalClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const totalPoints = getCastawayTotalPoints(castaway, week);
 
   const updateCastaway = async () => {
     const BASE_URI = getAPIURI();
@@ -74,96 +57,24 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
           />
           <div>Is Eliminated</div>
         </div>
-      ) : isEliminated ? (
-        <div className="bg-red-600 px-5 text-slate-900 rounded-t text-center font-bold grow">
-          Eliminated
-        </div>
       ) : (
-        <div className={`text-md bg-green-900 px-5 rounded-t font-bold`}>
-          {week ? `Week ${week} ` : 'Total '}Points: {totalPoints}
+        <div
+          className={`${
+            isEliminated
+              ? 'bg-red-900 text-red-100'
+              : 'bg-green-900 text-green-100'
+          } flex justify-center items-center text-md text-center rounded-t font-bold w-full h-8`}
+        >
+          {isEliminated
+            ? 'Eliminated'
+            : `${week ? `Week ${week}` : 'Total'} pts: ${totalPoints}`}
         </div>
       )}
 
-      <div
-        onClick={handleModalClick}
-        className={`text-xs bg-slate-500 hover:bg-slate-700 px-5 font-bold cursor-pointer`}
-      >
-        View Stats
-      </div>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleModalClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-      >
-        <table className="table-fixed">
-          <thead>
-            <tr>
-              <th className="pr-3">Week</th>
-              <th className="pr-3">Votes For</th>
-              <th className="pr-3">Votes Against</th>
-              <th className="pr-3">Challenge Wins</th>
-              <th className="pr-3">Immunity Wins</th>
-              <th className="pr-3">Idols Found</th>
-              <th className="pr-3">Tribal Councils</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{1}</td>
-              <td>
-                {
-                  castaway.scoringEventIds.filter((sc) => {
-                    return sc.week === 1 && sc.scoringEvent === 'VF';
-                  }).length
-                }
-              </td>
-              <td>
-                {
-                  castaway.scoringEventIds.filter((sc) => {
-                    return sc.week === 1 && sc.scoringEvent === 'VA';
-                  }).length
-                }
-              </td>
-              <td>
-                {
-                  castaway.scoringEventIds.filter((sc) => {
-                    return sc.week === 1 && sc.scoringEvent === 'CW';
-                  }).length
-                }
-              </td>
-              <td>
-                {
-                  castaway.scoringEventIds.filter((sc) => {
-                    return sc.week === 1 && sc.scoringEvent === 'IW';
-                  }).length
-                }
-              </td>
-              <td>
-                {
-                  castaway.scoringEventIds.filter((sc) => {
-                    return sc.week === 1 && sc.scoringEvent === 'IF';
-                  }).length
-                }
-              </td>
-              <td>
-                {
-                  castaway.scoringEventIds.filter((sc) => {
-                    return sc.week === 1 && sc.scoringEvent === 'TC';
-                  }).length
-                }
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </Popover>
+      <CastawayModalView castaway={castaway} />
 
       <img
-        className={`w-full ${isEliminated && 'eliminated'} `}
+        className={`w-full ${isEliminated && 'eliminated'}`}
         src={castaway.imageUrl}
         alt={castaway.name}
         style={{ width: 'auto', height: 'auto' }}
@@ -181,7 +92,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
           <span className={'input-border'}></span>
         </div>
       ) : (
-        <div className="lg:text-xl md:text-md text-center bg-slate-300 font-bold text-slate-900 px-5 grow">
+        <div className="text-md text-center bg-slate-300 font-bold text-slate-900 px-5 h-12 flex justify-center items-center">
           {castaway.name}
         </div>
       )}
@@ -201,10 +112,10 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
         <div
           className={`px-5 text-center text-xl font-bold ${
             castaway.tribe === 'Luvo'
-              ? 'bg-red-500'
+              ? 'bg-red-700 text-red-200'
               : castaway.tribe === 'Gata'
-              ? 'bg-amber-400 text-slate-900'
-              : 'bg-blue-700'
+              ? 'bg-amber-400 text-amber-900'
+              : 'bg-blue-800 text-blue-200'
           } ${viewOnlyCard && 'rounded-b'} italic`}
         >
           {castaway.tribe}
@@ -213,10 +124,10 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
 
       {!viewOnlyCard && (
         <button
-          className={`w-full rounded-b ${
+          className={`w-full h-6 rounded-b font-bold ${
             canAdd
-              ? 'bg-green-200 hover:bg-green-600'
-              : 'hover:bg-red-600 bg-red-200'
+              ? 'bg-green-900 hover:bg-green-800 text-green-200'
+              : 'hover:bg-red-800 bg-red-900 text-red-200'
           }`}
           onClick={() => handleClick(castaway._id)}
         >
@@ -231,31 +142,24 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
           )}
         </button>
       )}
-      {localStorage.getItem('role') === 'admin' &&
-        (!isEditing && localStorage.getItem('role') === 'admin' ? (
+      {localStorage.getItem('role') === 'admin' && (
+        <>
           <button
             className={`w-full rounded-b bg-slate-900 text-slate-200`}
-            onClick={() => setIsEditing(true)}
+            onClick={() => setIsEditing(!isEditing)}
           >
-            Edit
+            {isEditing ? 'Edit' : 'Cancel'}
           </button>
-        ) : (
-          <>
-            <button
-              className={`w-full rounded-b bg-slate-900 text-slate-200`}
-              onClick={() => setIsEditing(false)}
-            >
-              Cancel
-            </button>
-
+          {!isEditing && (
             <button
               className={`w-full rounded-b bg-slate-300 text-slate-900`}
               onClick={updateCastaway}
             >
               Save
             </button>
-          </>
-        ))}
+          )}
+        </>
+      )}
     </div>
   );
 };

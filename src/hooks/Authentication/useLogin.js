@@ -12,8 +12,6 @@ const useLogin = () => {
   const { postData: postLogin } = usePostWithToast(API_URL.LOGIN);
 
   const handleLogin = async (credentials) => {
-    console.log({ credentials });
-
     setLoading(true);
     try {
       const { name, role, token } = await postLogin('LOGIN', credentials);

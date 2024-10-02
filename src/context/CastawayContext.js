@@ -9,12 +9,12 @@ export const useCastaways = () => {
 
 export const CastawaysProvider = ({ children }) => {
   const { data: castaways, loading, error } = useFetchCastaways();
+
   const [cachedCastaways, setCachedCastaways] = useState(null);
   const [shouldRefetch, setShouldRefetch] = useState(false);
 
   useEffect(() => {
     if ((castaways && !cachedCastaways) || shouldRefetch) {
-      console.log('FETCHING CASTAWAYS');
       setCachedCastaways(castaways);
       setShouldRefetch(false);
     }
