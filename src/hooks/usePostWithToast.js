@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { TOAST_MESSAGE } from '../utils/constants';
 
 const usePostWithToast = (url) => {
-  const postData = async (requestType, data, auth = false) => {
+  const postData = async (requestType, data = {}, auth = false) => {
     try {
       toast.info(TOAST_MESSAGE[requestType].INFO, { autoClose: 2000 });
       const response = await axios.post(url, data, auth && auth);

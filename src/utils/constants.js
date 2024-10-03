@@ -6,6 +6,7 @@ export const API_URL = {
   LOGIN: `${BASE_URI}/api/auth/login`,
   REGISTER: `${BASE_URI}/api/auth/register`,
   CASTAWAY: `${BASE_URI}/api/admin/castaway`,
+  RESET_PASSWORD: `${BASE_URI}/api/auth/request-password-reset`,
 };
 
 export const TOAST_MESSAGE = {
@@ -23,5 +24,10 @@ export const TOAST_MESSAGE = {
     INFO: 'Adding new Castaway',
     SUCCESS: 'Successfully added new Castaway!',
     ERROR: 'Unable to addd new castaway',
+  },
+  RESET_PASSWORD: {
+    INFO: 'Requesting new password',
+    SUCCESS: 'Successfully requested new password email!',
+    ERROR: 'Unable to request new password.',
   },
 };

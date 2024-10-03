@@ -10,6 +10,7 @@ import Landing from './pages/landing/Landing';
 import Leaderboard from './pages/Leaderboard/Leaderboard';
 import MyTribe from './pages/MyTribe/MyTribe';
 import Scoring from './pages/scoring/Scoring';
+import ResetPassword from './pages/ResetPassword/ResetPassword';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               />
               <Route path="log-scoring" element={<Scoring />} />
             </Route>
+            <Route path="reset-password/*" element={<ResetPassword />} />
           </Routes>
         </BrowserRouter>
         <ToastContainer
