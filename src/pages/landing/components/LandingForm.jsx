@@ -18,11 +18,8 @@ export const LandingForm = ({
     }
   }, [formCTA]);
 
-  const {
-    handleResetPassword: resetPasswordHandler,
-    loading: resetLoading,
-    success: resetSuccess,
-  } = useResetPassword();
+  const { handleResetPassword: resetPasswordHandler, loading: resetLoading } =
+    useResetPassword();
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
