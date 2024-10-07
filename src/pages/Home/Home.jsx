@@ -147,7 +147,9 @@ const Home = () => {
           </nav>
 
           <main
-            className={'w-full border-l-4 border-slate-600 bg-slate-300 p-4'}
+            className={
+              'w-full border-l-4 border-slate-600 bg-slate-300 p-4 h-fit'
+            }
           >
             <Outlet />
           </main>

@@ -152,9 +152,10 @@ const MyTribe = () => {
         will be able to make edits again the following day, Thursday, starting
         at 12:00 AM.
       </div>
-      <hr className={'border-slate-900 mt-5'} />
+      <hr className={'border-slate-900 my-5'} />
       {localStorage.getItem('role') === 'admin' && (
         <select
+          className={'md:block hidden'}
           value={targetWeek}
           onChange={(e) => setTargetWeek(e.target.value)}
         >
@@ -174,7 +175,7 @@ const MyTribe = () => {
       {myTribe ? (
         <div>
           <div
-            className={'flex flex-row flex-wrap justify-center items-center'}
+            className={'flex flex-row flex-wrap justify-evenly items-center'}
           >
             {stats.map((st) => {
               return (
@@ -187,7 +188,7 @@ const MyTribe = () => {
             })}
           </div>
 
-          <hr className={'border-slate-900 mb-5'} />
+          <hr className={'border-slate-900 my-5'} />
 
           <div className={'flex flex-row'}>
             <button
@@ -196,7 +197,7 @@ const MyTribe = () => {
                 activeTab === 'myTribe'
                   ? 'bg-slate-700 text-slate-300'
                   : 'bg-slate-900 text-slate-100'
-              } p-2 rounded min-w-32 rounded-b-none text-sm`}
+              } p-2 rounded md:min-w-32 rounded-b-none text-sm`}
             >
               My Tribe Members
             </button>
@@ -206,7 +207,7 @@ const MyTribe = () => {
                 activeTab === 'history'
                   ? 'bg-slate-700 text-slate-300'
                   : 'bg-slate-900 text-slate-100'
-              } p-2 rounded min-w-32 rounded-b-none text-sm`}
+              } p-2 rounded md:min-w-32 rounded-b-none text-sm`}
             >
               Tribe History
             </button>
@@ -216,12 +217,12 @@ const MyTribe = () => {
                 activeTab === 'edit'
                   ? 'bg-slate-700 text-slate-300'
                   : 'bg-slate-900 text-slate-100'
-              } p-2 rounded min-w-32 rounded-b-none text-sm`}
+              } p-2 rounded md:min-w-32 rounded-b-none text-sm`}
             >
               Edit Tribe
             </button>
           </div>
-          <div className={'bg-slate-700 p-2 rounded rounded-tl-none'}>
+          <div className={'bg-slate-700 md:p-2 rounded rounded-tl-none'}>
             {activeTab === 'myTribe' ? (
               <div>
                 <div
@@ -251,7 +252,9 @@ const MyTribe = () => {
               </div>
             ) : activeTab === 'edit' ? (
               <div>
-                <div className={'text-slate-200 font-bold text-lg'}>
+                <div
+                  className={'text-slate-200 font-bold md:text-lg text-sm p-3'}
+                >
                   <span>
                     Use the Add or Drop buttons to update your active Tribe!
                   </span>
@@ -319,35 +322,42 @@ const MyTribe = () => {
                     </div>
                   ))}
                 {tribeHistory &&
-                  tribeHistory.map((t) => (
-                    <div key={`my_tribe_history__${t._id}`}>
-                      <span className={'text-slate-300 lg:text-lg font-bold'}>
-                        Your Fantasy Tribe from week {t.week}
-                      </span>
-                      <div
-                        className={
-                          'flex flex-row flex-wrap justify-center items-center'
-                        }
-                      >
-                        {t.castaways.map((c) => {
-                          return (
-                            <CastawayCard
-                              week={t.week}
-                              castaway={c}
-                              handleClick={null}
-                              key={`tribe_history__${c._id}`}
-                            />
-                          );
-                        })}
+                  tribeHistory
+                    .sort((a, b) => b.week - a.week)
+                    .map((t) => (
+                      <div key={`my_tribe_history__${t._id}`}>
+                        <span
+                          className={'text-slate-300 lg:text-lg font-bold p-3'}
+                        >
+                          Your Fantasy Tribe from week {t.week}
+                        </span>
+                        <div
+                          className={
+                            'flex flex-row flex-wrap justify-center items-center'
+                          }
+                        >
+                          {t.castaways.map((c) => {
+                            return (
+                              <CastawayCard
+                                week={t.week}
+                                castaway={c}
+                                handleClick={null}
+                                key={`tribe_history__${c._id}`}
+                              />
+                            );
+                          })}
+                        </div>
+                        <hr />
                       </div>
-                      <hr />
-                    </div>
-                  ))}
+                    ))}
               </div>
             )}
           </div>
           {localStorage.getItem('role') === 'admin' && (
-            <button className={'boton-elegante'} onClick={freezeTribeCastaways}>
+            <button
+              className={'boton-elegante md:block hidden'}
+              onClick={freezeTribeCastaways}
+            >
               Freeze All Tribes
             </button>
           )}

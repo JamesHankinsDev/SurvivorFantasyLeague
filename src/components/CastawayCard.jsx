@@ -143,7 +143,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
         </button>
       )}
       {localStorage.getItem('role') === 'admin' && (
-        <>
+        <div className={'md:block hidden'}>
           <button
             className={`w-full rounded-b bg-slate-900 text-slate-200`}
             onClick={() => setIsEditing(!isEditing)}
@@ -158,7 +158,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
               Save
             </button>
           )}
-        </>
+        </div>
       )}
     </div>
   );

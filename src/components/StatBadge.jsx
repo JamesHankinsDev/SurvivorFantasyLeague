@@ -12,12 +12,22 @@ export const StatBadge = ({ header, count }) => {
 
   return (
     <div
-      className={'bg-slate-500 text-slate-900 rounded text-center font-bold'}
+      className={
+        'bg-slate-500 text-slate-900 rounded text-center font-bold my-1 w-20 h-24 flex flex-col'
+      }
     >
-      <div className={'bg-slate-900 text-slate-200 rounded-t p-1'}>
+      <div
+        className={'bg-slate-900 text-slate-200 rounded-t p-1 text-xs grow-0'}
+      >
         {headerMap[header]}
       </div>
-      <div className={'text-5xl p-2'}>{count}</div>
+      <div
+        className={
+          'md:text-4xl text-3xl py-1 grow-2 grow flex justify-center items-center'
+        }
+      >
+        {count}
+      </div>
     </div>
   );
 };
