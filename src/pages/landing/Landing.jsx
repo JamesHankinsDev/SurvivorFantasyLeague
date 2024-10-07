@@ -48,23 +48,30 @@ const Landing = () => {
   }, [loginSuccess, registerSuccess, navigate]);
 
   return (
-    <div className="columns-2 bg-slate-900 h-screen overflow-hidden">
-      <div className="bg-[url('https://media.istockphoto.com/id/467002425/photo/tiki-lamps-on-the-beach-of-hawaii.jpg?s=612x612&w=0&k=20&c=3MrGawPg8ZkrIgQwMNW4f9u9wEk7NS0IP76KFnCR_Rg=')] bg-cover h-full text-slate-300 font-extrabold flex items-center justify-center flex-col p-5 text-center">
-        <h1 className="text-5xl">
-          Survivor
-          <br />
-          Fantasy
-          <br />
-          League{' '}
-        </h1>
-        <h3 className="text-2xl mt-5">Fall, '24</h3>
+    <div className="md:columns-2 md:block flex justify-between flex-col bg-slate-900 h-screen overflow-hidden">
+      <div className="md:bg-[url('https://media.istockphoto.com/id/467002425/photo/tiki-lamps-on-the-beach-of-hawaii.jpg?s=612x612&w=0&k=20&c=3MrGawPg8ZkrIgQwMNW4f9u9wEk7NS0IP76KFnCR_Rg=')] md:bg-cover md:h-full md:text-slate-300 text-slate-900 font-extrabold flex items-center justify-center md:flex-col p-5 text-center bg-slate-300 md:text-5xl text-sm">
+        <h1 className="px-1">Survivor</h1>
+        <h1 className="px-1">Fantasy</h1>
+        <h1 className="px-1">League</h1>
+        <span className="md:hidden"> | </span>
+        <h1 className="px-1 md:text-2xl text-xs md:mt-5">Fall, '24</h1>
       </div>
-      <div className="bg-slate-900 text-slate-300 h-full flex flex-col justify-between items-center p-6">
+      <div className="bg-slate-900 text-slate-300 md:h-full flex md:flex-col flex-col-reverse justify-between items-center md:p-6 p-2 grow">
         <div className={'flex justify-end w-full px-5'}>
           {!showLogin ? (
-            <button onClick={() => setShowLogin(true)}>Login</button>
+            <button
+              className="boton-elegante"
+              onClick={() => setShowLogin(true)}
+            >
+              Login
+            </button>
           ) : (
-            <button onClick={() => setShowLogin(false)}>Sign Up</button>
+            <button
+              className="boton-elegante"
+              onClick={() => setShowLogin(false)}
+            >
+              Sign Up
+            </button>
           )}
         </div>
         <div
