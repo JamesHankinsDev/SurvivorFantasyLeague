@@ -122,7 +122,7 @@ const Home = () => {
                   <Link
                     to="/log-scoring"
                     onClick={() => setActiveTab('log-scoring')}
-                    className={`hover:text-white px-4 py-1 my-2 ${
+                    className={`hover:text-white px-4 py-1 my-2 md:block hidden ${
                       activeTab === 'log-scoring' &&
                       'bg-slate-300 text-slate-900 rounded hover:text-slate-900'
                     }`}
