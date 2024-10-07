@@ -148,9 +148,9 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
             className={`w-full rounded-b bg-slate-900 text-slate-200`}
             onClick={() => setIsEditing(!isEditing)}
           >
-            {isEditing ? 'Edit' : 'Cancel'}
+            {!isEditing ? 'Edit' : 'Cancel'}
           </button>
-          {!isEditing && (
+          {isEditing && (
             <button
               className={`w-full rounded-b bg-slate-300 text-slate-900`}
               onClick={updateCastaway}

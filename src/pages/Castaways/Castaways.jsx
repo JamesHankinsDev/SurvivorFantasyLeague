@@ -42,9 +42,9 @@ const Castaways = () => {
         )}
       </div>
       {userRole === 'admin' && (
-        <>
+        <div className={'hidden md:block'}>
           <AddCastaway />
-        </>
+        </div>
       )}
     </div>
   );
