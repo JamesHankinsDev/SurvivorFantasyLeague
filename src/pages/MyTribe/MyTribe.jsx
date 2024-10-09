@@ -137,16 +137,14 @@ const MyTribe = () => {
 
   return (
     <div className="flex flex-col">
-      <div className={`text-xl font-bold text-slate-900`}>
+      <div className={`md:text-xl text-md font-bold text-slate-900`}>
         This is your Fantasy Tribe roster.
       </div>
-      <div className={`text-md text-slate-900`}>
+      <div className={`md:text-md text-sm text-slate-900`}>
         Here, you can review your current Fantasy Tribe, and edit your roster.
         Keep in mind, you can only replace one castaway from your team each
         week. Additionally, your Fantasy Tribe will lock after the Merge!
-      </div>
-      <br />
-      <div className={`text-md text-slate-900`}>
+        <br />
         Keep in mind, your tribe will lock at 8:00 PM EST on Wednesday nights.
         This is to make sure we can appropriately track scoring each week. You
         will be able to make edits again the following day, Thursday, starting

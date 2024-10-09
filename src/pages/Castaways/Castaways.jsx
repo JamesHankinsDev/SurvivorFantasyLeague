@@ -17,10 +17,10 @@ const Castaways = () => {
 
   return (
     <div className="flex flex-col max-h-full max-w-full">
-      <div className={`text-xl font-bold text-slate-900`}>
+      <div className={`md:text-xl text-md font-bold text-slate-900`}>
         Meet the Castaways of Survivor Season 47!
       </div>
-      <div className={`text-md text-slate-900`}>
+      <div className={`md:text-md text-sm text-slate-900`}>
         Use this page to explore the Castaways and their performance so far this
         season. You can see their total points at the top of the card in green,
         or click on "stats" to see a breakdown of their season.

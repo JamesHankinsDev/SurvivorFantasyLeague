@@ -13,7 +13,7 @@ export const StatBadge = ({ header, count }) => {
   return (
     <div
       className={
-        'bg-slate-500 text-slate-900 rounded text-center font-bold my-1 w-20 h-24 flex flex-col'
+        'bg-slate-500 text-slate-900 rounded text-center font-bold my-1 md:w-20 w-18 md:h-24 h-20 flex flex-col'
       }
     >
       <div
@@ -23,7 +23,7 @@ export const StatBadge = ({ header, count }) => {
       </div>
       <div
         className={
-          'md:text-4xl text-3xl py-1 grow-2 grow flex justify-center items-center'
+          'md:text-4xl text-3xl grow-2 grow flex justify-center items-center'
         }
       >
         {count}

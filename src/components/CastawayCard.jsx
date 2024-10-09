@@ -38,7 +38,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
 
   return (
     <div
-      className={`rounded border-slate-500 border-2 h-max my-2 w-36 mx-2 h-64 flex flex-col`}
+      className={`rounded border-slate-500 border-2 h-max my-2 md:w-36 w-28 mx-2 h-64 flex flex-col`}
     >
       {isEditing ? (
         <div className="flex flex-row">
@@ -63,7 +63,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
             isEliminated
               ? 'bg-red-900 text-red-100'
               : 'bg-green-900 text-green-100'
-          } flex justify-center items-center text-md text-center rounded-t font-bold w-full h-8`}
+          } flex justify-center items-center text-md text-center rounded-t font-bold w-full h-8 md:text-lg text-sm`}
         >
           {isEliminated
             ? 'Eliminated'
@@ -74,7 +74,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
       <CastawayModalView castaway={castaway} />
 
       <img
-        className={`w-full ${isEliminated && 'eliminated'}`}
+        className={`w-full ${isEliminated && 'eliminated z-0'}`}
         src={castaway.imageUrl}
         alt={castaway.name}
         style={{ width: 'auto', height: 'auto' }}
@@ -92,7 +92,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
           <span className={'input-border'}></span>
         </div>
       ) : (
-        <div className="text-md text-center bg-slate-300 font-bold text-slate-900 px-5 h-12 flex justify-center items-center">
+        <div className="md:text-md text-sm text-center bg-slate-300 font-bold text-slate-900 px-5 md:h-12 h-10 flex justify-center items-center">
           {castaway.name}
         </div>
       )}
@@ -110,7 +110,7 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
         </div>
       ) : (
         <div
-          className={`px-5 text-center text-xl font-bold ${
+          className={`px-5 text-center md:text-xl text-md font-bold ${
             castaway.tribe === 'Luvo'
               ? 'bg-red-700 text-red-200'
               : castaway.tribe === 'Gata'

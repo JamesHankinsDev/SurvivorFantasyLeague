@@ -49,12 +49,15 @@ const Landing = () => {
 
   return (
     <div className="md:columns-2 md:block flex justify-between flex-col bg-slate-900 h-screen overflow-hidden">
-      <div className="md:bg-[url('https://media.istockphoto.com/id/467002425/photo/tiki-lamps-on-the-beach-of-hawaii.jpg?s=612x612&w=0&k=20&c=3MrGawPg8ZkrIgQwMNW4f9u9wEk7NS0IP76KFnCR_Rg=')] md:bg-cover md:h-full md:text-slate-300 text-slate-900 font-extrabold flex items-center justify-center md:flex-col p-5 text-center bg-slate-300 md:text-5xl text-sm">
+      <div className="md:bg-[url('https://media.istockphoto.com/id/467002425/photo/tiki-lamps-on-the-beach-of-hawaii.jpg?s=612x612&w=0&k=20&c=3MrGawPg8ZkrIgQwMNW4f9u9wEk7NS0IP76KFnCR_Rg=')] md:bg-cover md:h-full md:text-slate-300 text-slate-900 font-extrabold flex items-center justify-center md:flex-col p-5 text-center bg-slate-300 md:text-5xl text-md">
         <h1 className="px-1">Survivor</h1>
+        <span className="md:hidden">|</span>
         <h1 className="px-1">Fantasy</h1>
+        <span className="md:hidden">|</span>
         <h1 className="px-1">League</h1>
-        <span className="md:hidden"> | </span>
-        <h1 className="px-1 md:text-2xl text-xs md:mt-5">Fall, '24</h1>
+        <h1 className="px-1 md:text-2xl text-md md:mt-5 md:block hidden">
+          Fall, '24
+        </h1>
       </div>
       <div className="bg-slate-900 text-slate-300 md:h-full flex md:flex-col flex-col-reverse justify-between items-center md:p-6 p-2 grow">
         <div className={'flex justify-end w-full px-5'}>
