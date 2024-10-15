@@ -59,7 +59,8 @@ export const CastawayCard = ({ castaway, week, handleClick, canAdd }) => {
         </div>
       ) : (
         <div
-          className={`${
+          className={`${!totalPoints ? 'hidden' : ''} 
+          ${
             isEliminated
               ? 'bg-red-900 text-red-100'
               : 'bg-green-900 text-green-100'

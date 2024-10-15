@@ -1,19 +1,12 @@
-import { useEffect } from 'react';
 import { CastawayCard } from '../../components/CastawayCard';
 import { useAuth } from '../../context/AuthContext';
 import { useCastaways } from '../../context/CastawayContext';
 import { AddCastaway } from './components/AddCastaway';
 
 const Castaways = () => {
-  const { cachedCastaways: castaways, loading, error } = useCastaways();
+  const { cachedCastaways: castaways, loading } = useCastaways();
 
   const { userRole } = useAuth();
-
-  useEffect(() => {
-    if (error) {
-      console.error({ CastawaysError: error });
-    }
-  }, [error]);
 
   return (
     <div className="flex flex-col max-h-full max-w-full">

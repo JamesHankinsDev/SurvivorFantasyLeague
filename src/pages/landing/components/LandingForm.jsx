@@ -96,7 +96,7 @@ export const LandingForm = ({
               <input
                 className={'input'}
                 type="text"
-                placeholder="Fantasy Tribe Name"
+                placeholder="Tribe Name or Email"
                 onChange={(e) =>
                   setCredentials((pv) => ({
                     ...pv,
