@@ -15,6 +15,8 @@ export const CastawayModalView = ({ castaway }) => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
+  console.log({ scoringIds: castaway.scoringEventIds });
+
   return (
     <>
       <div
@@ -36,7 +38,6 @@ export const CastawayModalView = ({ castaway }) => {
         <table className="table-fixed">
           <thead>
             <tr>
-              <th className="pr-3">Week</th>
               <th className="pr-3">Votes For</th>
               <th className="pr-3">Votes Against</th>
               <th className="pr-3">Challenge Wins</th>
@@ -47,46 +48,45 @@ export const CastawayModalView = ({ castaway }) => {
           </thead>
           <tbody>
             <tr>
-              <td>{1}</td>
               <td>
                 {
                   castaway.scoringEventIds.filter(
-                    (sc) => sc.week === 1 && sc.scoringEvent === 'VF'
+                    (sc) => sc.scoringEvent === 'VF'
                   ).length
                 }
               </td>
               <td>
                 {
                   castaway.scoringEventIds.filter(
-                    (sc) => sc.week === 1 && sc.scoringEvent === 'VA'
+                    (sc) => sc.scoringEvent === 'VA'
                   ).length
                 }
               </td>
               <td>
                 {
                   castaway.scoringEventIds.filter(
-                    (sc) => sc.week === 1 && sc.scoringEvent === 'CW'
+                    (sc) => sc.scoringEvent === 'CW'
                   ).length
                 }
               </td>
               <td>
                 {
                   castaway.scoringEventIds.filter(
-                    (sc) => sc.week === 1 && sc.scoringEvent === 'IW'
+                    (sc) => sc.scoringEvent === 'IW'
                   ).length
                 }
               </td>
               <td>
                 {
                   castaway.scoringEventIds.filter(
-                    (sc) => sc.week === 1 && sc.scoringEvent === 'IF'
+                    (sc) => sc.scoringEvent === 'IF'
                   ).length
                 }
               </td>
               <td>
                 {
                   castaway.scoringEventIds.filter(
-                    (sc) => sc.week === 1 && sc.scoringEvent === 'TC'
+                    (sc) => sc.scoringEvent === 'TC'
                   ).length
                 }
               </td>

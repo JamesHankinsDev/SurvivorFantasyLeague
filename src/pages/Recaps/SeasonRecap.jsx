@@ -23,7 +23,7 @@ export const SeasonRecap = () => {
     <>
       <h1>Weekly Recap!</h1>
       <h2>Coming soon.</h2>
-      {/* {loading ? (
+      {loading ? (
         <h1>Loading</h1>
       ) : Object.entries(weeklyScoring) !== null &&
         Object.entries(weeklyScoring) !== 0 ? (
@@ -32,7 +32,7 @@ export const SeasonRecap = () => {
         ))
       ) : (
         <></>
-      )} */}
+      )}
     </>
   );
 };

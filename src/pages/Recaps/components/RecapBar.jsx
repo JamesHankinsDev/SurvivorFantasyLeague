@@ -18,7 +18,7 @@ export const RecapBar = ({ scores }) => {
       }`}</h1>
       <h2>{headerMap.VF}</h2>
       <div
-        className={'flex flex-row flex-wrap justify-center items-center w-full'}
+        className={'flex flex-row flex-wrap justify-start items-center w-full'}
       >
         {scores[1]
           .filter((sca) => sca.scoringEvent === 'VF')
@@ -29,13 +29,14 @@ export const RecapBar = ({ scores }) => {
                 castaway={sc}
                 handleClick={null}
                 key={`myTribe__${sc._id}`}
+                week={scores[0].split('_')[1]}
               />
             );
           })}
       </div>
       <h2>{headerMap.VA}</h2>
       <div
-        className={'flex flex-row flex-wrap justify-center items-center w-full'}
+        className={'flex flex-row flex-wrap justify-start items-center w-full'}
       >
         {scores[1]
           .filter((sca) => sca.scoringEvent === 'VA')
@@ -54,7 +55,7 @@ export const RecapBar = ({ scores }) => {
       </div>
       <h2>{headerMap.CW}</h2>
       <div
-        className={'flex flex-row flex-wrap justify-center items-center w-full'}
+        className={'flex flex-row flex-wrap justify-start items-center w-full'}
       >
         {scores[1]
           .filter((sca) => sca.scoringEvent === 'CW')
@@ -71,7 +72,7 @@ export const RecapBar = ({ scores }) => {
       </div>
       <h2>{headerMap.IW}</h2>
       <div
-        className={'flex flex-row flex-wrap justify-center items-center w-full'}
+        className={'flex flex-row flex-wrap justify-start items-center w-full'}
       >
         {scores[1]
           .filter((sca) => sca.scoringEvent === 'IW')
@@ -88,7 +89,7 @@ export const RecapBar = ({ scores }) => {
       </div>
       <h2>{headerMap.IF}</h2>
       <div
-        className={'flex flex-row flex-wrap justify-center items-center w-full'}
+        className={'flex flex-row flex-wrap justify-start items-center w-full'}
       >
         {scores[1]
           .filter((sca) => sca.scoringEvent === 'IF')
@@ -105,7 +106,7 @@ export const RecapBar = ({ scores }) => {
       </div>
       <h2>{headerMap.EL}</h2>
       <div
-        className={'flex flex-row flex-wrap justify-center items-center w-full'}
+        className={'flex flex-row flex-wrap justify-start items-center w-full'}
       >
         {scores[1]
           .filter((sca) => sca.scoringEvent === 'EL')
@@ -122,7 +123,7 @@ export const RecapBar = ({ scores }) => {
       </div>
       <h2>{headerMap.TC}</h2>
       <div
-        className={'flex flex-row flex-wrap justify-center items-center w-full'}
+        className={'flex flex-row flex-wrap justify-start items-center w-full'}
       >
         {scores[1]
           .filter((sca) => sca.scoringEvent === 'TC')

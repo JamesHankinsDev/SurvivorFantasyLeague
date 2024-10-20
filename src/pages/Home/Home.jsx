@@ -6,7 +6,7 @@ import ArrowUpward from '@mui/icons-material/ArrowUpward';
 import ArrowDownward from '@mui/icons-material/ArrowDownward';
 
 const Home = () => {
-  const [activeTab, setActiveTab] = useState('castaways');
+  const [activeTab, setActiveTab] = useState('');
   const [showNav, setShowNav] = useState(false);
 
   const { userName, userRole, logout } = useAuth();
@@ -18,10 +18,6 @@ const Home = () => {
     const accessToken = localStorage.getItem('token');
     if (accessToken === null) {
       navigate('/Login');
-    }
-
-    if (urlPath && urlPath !== '/') {
-      setActiveTab(urlPath.substring(1));
     }
   }, [navigate, urlPath]);
 
@@ -52,7 +48,7 @@ const Home = () => {
         </div>
         <div className="flex md:flex-row flex-row-reverse h-full">
           <nav
-            className={`text-slate-300 bg-slate-900 p-4 w-44 flex flex-col md:items-start items-end inline text-sm md:sticky fixed md:left-0 md:top-16 bottom-2 right-2 z-10 justify-end md:justify-start w-fit rounded ${
+            className={`text-slate-300 text-xs bg-slate-900 p-4 md:w-44 flex flex-col md:items-start items-end inline text-sm md:sticky fixed md:left-0 md:top-16 bottom-2 right-2 z-10 justify-end md:justify-start rounded w-fit md:border-r-4 border-slate-600 ${
               showNav ? 'opacity-100' : 'opacity-80'
             }`}
           >
@@ -81,7 +77,7 @@ const Home = () => {
                   {'<'}
                 </span>
                 <Link
-                  to="/"
+                  to="/castaways"
                   onClick={() => setActiveTab('castaways')}
                   className={`hover:text-white px-4 py-1 my-2 ${
                     activeTab === 'castaways' &&
@@ -111,6 +107,16 @@ const Home = () => {
                   Leaderboard
                 </Link>
                 <Link
+                  to="/chat"
+                  onClick={() => setActiveTab('chat')}
+                  className={`hover:text-white px-4 py-1 my-2 ${
+                    activeTab === 'chat' &&
+                    'bg-slate-300 text-slate-900 rounded hover:text-slate-900'
+                  }`}
+                >
+                  Chat
+                </Link>
+                <Link
                   to="/ep-recap"
                   onClick={() => setActiveTab('ep-recap')}
                   className={`hover:text-white px-4 py-1 my-2 ${
@@ -132,6 +138,16 @@ const Home = () => {
                     Log Scoring
                   </Link>
                 )}
+                <Link
+                  to="/how-it-works"
+                  onClick={() => setActiveTab('how-it-works')}
+                  className={`hover:text-white px-4 py-1 my-2 ${
+                    activeTab === 'how-it-works' &&
+                    'bg-slate-300 text-slate-900 rounded hover:text-slate-900'
+                  }`}
+                >
+                  How it works
+                </Link>
                 <button
                   className={`md:hidden hover:text-white px-4 py-1 my-2 ${
                     activeTab === 'log-scoring' &&
@@ -148,11 +164,7 @@ const Home = () => {
             )}
           </nav>
 
-          <main
-            className={
-              'w-full border-l-4 border-slate-600 bg-slate-300 p-4 h-fit'
-            }
-          >
+          <main className={'w-full bg-slate-300 p-4 h-fit'}>
             <Outlet />
           </main>
         </div>
