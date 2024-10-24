@@ -15,8 +15,6 @@ export const CastawayModalView = ({ castaway }) => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  console.log({ scoringIds: castaway.scoringEventIds });
-
   return (
     <>
       <div

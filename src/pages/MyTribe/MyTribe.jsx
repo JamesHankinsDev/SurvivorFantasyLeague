@@ -1,17 +1,17 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { CastawayCard } from '../../components/CastawayCard';
-import { StatBadge } from '../../components/StatBadge';
-import { getMyTeamStats } from '../../utils/pointsHelper';
 import { getAPIURI } from '../../utils/API';
 import { useCastaways } from '../../context/CastawayContext';
+import { MyTribeCastawayCards } from './components/MyTribeCastawayCards';
+import { CastawayGrid } from './components/CastawayGrid';
 
 const MyTribe = () => {
   const [myTribe, setMyTribe] = useState([]);
   const [tribeHistory, setTribeHistory] = useState([]);
   const [targetWeek, setTargetWeek] = useState(null);
   const [activeTab, setActiveTab] = useState('myTribe');
-  const [stats, setStats] = useState([]);
+  const [modalCastaway, setModalCastaway] = useState(null);
 
   useEffect(() => {
     const fetchMyTribe = async () => {
@@ -23,8 +23,6 @@ const MyTribe = () => {
       try {
         setMyTribe(response.data.castaways ?? null);
         setTribeHistory(response.data.fantasyTribes);
-        const pointHelperRes = getMyTeamStats(response.data.fantasyTribes);
-        setStats(pointHelperRes);
       } catch {
         setMyTribe(null);
       }
@@ -137,55 +135,40 @@ const MyTribe = () => {
 
   return (
     <div className="flex flex-col">
+      {!modalCastaway ? (
+        <></>
+      ) : (
+        <CastawayModal
+          castaways={castaways}
+          castaway={castaways.find((cs) => cs._id === modalCastaway)}
+          resetModal={() => setModalCastaway(false)}
+          replaceableCastaways={(() => {
+            console.log({
+              myNewTribe: myTribe[4],
+              myOldTribe: tribeHistory[tribeHistory.length - 1].castaways[4],
+            });
+            return myTribe[4]._id ===
+              tribeHistory[tribeHistory.length - 1].castaways[4]._id
+              ? myTribe
+              : [myTribe[4]];
+          })()}
+        />
+      )}
       <div className={`md:text-xl text-md font-bold text-slate-900`}>
-        This is your Fantasy Tribe roster.
-      </div>
-      <div className={`md:text-md text-sm text-slate-900`}>
-        Here, you can review your current Fantasy Tribe, and edit your roster.
-        Keep in mind, you can only replace one castaway from your team each
-        week. Additionally, your Fantasy Tribe will lock after the Merge!
-        <br />
-        Keep in mind, your tribe will lock at 8:00 PM EST on Wednesday nights.
-        This is to make sure we can appropriately track scoring each week. You
-        will be able to make edits again the following day, Thursday, starting
-        at 12:00 AM.
+        Your Active Fantasy Tribe.
       </div>
       <hr className={'border-slate-900 my-5'} />
-      {localStorage.getItem('role') === 'admin' && (
-        <select
-          className={'md:block hidden'}
-          value={targetWeek}
-          onChange={(e) => setTargetWeek(e.target.value)}
-        >
-          <option value="1">My Fantasy Tribe | Week 1</option>
-          <option value="2">My Fantasy Tribe | Week 2</option>
-          <option value="3">My Fantasy Tribe | Week 3</option>
-          <option value="4">My Fantasy Tribe | Week 4</option>
-          <option value="5">My Fantasy Tribe | Week 5</option>
-          <option value="6">My Fantasy Tribe | Week 6</option>
-          <option value="7">My Fantasy Tribe | Week 7</option>
-          <option value="8">My Fantasy Tribe | Week 8</option>
-          <option value="9">My Fantasy Tribe | Week 9</option>
-          <option value="10">My Fantasy Tribe | Week 10</option>
-          <option value="11">My Fantasy Tribe | Week 11</option>
-        </select>
-      )}
+      <>
+        <MyTribeCastawayCards castaways={myTribe} />
+        <hr className={'border-slate-900 my-5'} />
+        <CastawayGrid
+          castaways={castaways}
+          myTribe={myTribe}
+          handleModal={setModalCastaway}
+        />
+      </>
       {myTribe ? (
         <div>
-          <div
-            className={'flex flex-row flex-wrap justify-evenly items-center'}
-          >
-            {stats.map((st) => {
-              return (
-                <StatBadge
-                  key={`statbadge__${st[0]}`}
-                  header={st[0]}
-                  count={st[1].count}
-                />
-              );
-            })}
-          </div>
-
           <hr className={'border-slate-900 my-5'} />
 
           <div className={'flex flex-row'}>
@@ -352,12 +335,33 @@ const MyTribe = () => {
             )}
           </div>
           {localStorage.getItem('role') === 'admin' && (
-            <button
-              className={'boton-elegante md:block hidden'}
-              onClick={freezeTribeCastaways}
-            >
-              Freeze All Tribes
-            </button>
+            <>
+              {localStorage.getItem('role') === 'admin' && (
+                <select
+                  className={'md:block hidden'}
+                  value={targetWeek}
+                  onChange={(e) => setTargetWeek(e.target.value)}
+                >
+                  <option value="1">My Fantasy Tribe | Week 1</option>
+                  <option value="2">My Fantasy Tribe | Week 2</option>
+                  <option value="3">My Fantasy Tribe | Week 3</option>
+                  <option value="4">My Fantasy Tribe | Week 4</option>
+                  <option value="5">My Fantasy Tribe | Week 5</option>
+                  <option value="6">My Fantasy Tribe | Week 6</option>
+                  <option value="7">My Fantasy Tribe | Week 7</option>
+                  <option value="8">My Fantasy Tribe | Week 8</option>
+                  <option value="9">My Fantasy Tribe | Week 9</option>
+                  <option value="10">My Fantasy Tribe | Week 10</option>
+                  <option value="11">My Fantasy Tribe | Week 11</option>
+                </select>
+              )}
+              <button
+                className={'boton-elegante md:block hidden'}
+                onClick={freezeTribeCastaways}
+              >
+                Freeze All Tribes
+              </button>
+            </>
           )}
         </div>
       ) : (
@@ -376,3 +380,182 @@ const MyTribe = () => {
 };
 
 export default MyTribe;
+
+const CastawayModal = ({ castaway, resetModal, replaceableCastaways }) => {
+  console.log({ castaway, replaceableCastaways });
+  return (
+    <>
+      <div
+        className={
+          'fixed top-0 left-0 bg-blue-300 h-screen w-screen z-index-0 opacity-45 flex justify-center items-center'
+        }
+        onClick={resetModal}
+      ></div>
+      <div
+        className={
+          'fixed top-0 left-0 h-screen w-screen z-index-0 flex justify-center items-center'
+        }
+      >
+        <div className={'w-fit flex flex-row'} onClick={() => {}}>
+          <div
+            className={'w-full'}
+            id={`my_tribe_castaway_card_${castaway._id}`}
+          >
+            <img
+              className={`min-w-full rounded-tl-xl ${
+                castaway.status === 'eliminated' && 'eliminated z-0'
+              }`}
+              src={castaway.imageMd}
+              alt={castaway.name}
+              style={{ width: 'auto', height: 'auto' }}
+            />
+            <h1
+              className={
+                'bg-slate-900 rounded-bl-xl px-2 md:text-lg text-xs text-right text-slate-200 font-bold'
+              }
+            >
+              {castaway.name}
+            </h1>
+          </div>
+          <div
+            className={
+              'flex flex-col bg-slate-300 w-full p-3 rounded-tr-xl rounded-br-xl justify-between'
+            }
+          >
+            <div className={'flex flex-row w-full justify-end'}>
+              <h1
+                className={
+                  'text-right p-1 bg-red-200 text-red-900 rounded-xl text-xs m-1 hover:cursor-pointer'
+                }
+                onClick={resetModal}
+              >
+                X
+              </h1>
+            </div>
+            <div className={'flex flex-row w-full justify-between'}>
+              <h1
+                className={
+                  'p-1 bg-slate-900 text-slate-300 grow text-lg font-bold underline italic'
+                }
+              >
+                Tribe
+              </h1>
+              <p className={'p-1 bg-slate-400 text-slate-900 grow text-right'}>
+                {castaway.tribe}
+              </p>
+            </div>
+            <div className={'flex flex-row'}>
+              <h1
+                className={
+                  'p-1 bg-slate-900 text-slate-300 grow text-lg font-bold underline italic'
+                }
+              >
+                Votes For
+              </h1>
+              <p className={'p-1 bg-slate-400 text-slate-900 grow text-right'}>
+                {
+                  castaway.scoringEventIds.filter(
+                    (sc) => sc.scoringEvent === 'VF'
+                  ).length
+                }
+              </p>
+            </div>
+            <div className={'flex flex-row'}>
+              <h1
+                className={
+                  'p-1 bg-slate-900 text-slate-300 grow text-lg font-bold underline italic'
+                }
+              >
+                Votes Against
+              </h1>
+              <p className={'p-1 bg-slate-400 text-slate-900 grow text-right'}>
+                {
+                  castaway.scoringEventIds.filter(
+                    (sc) => sc.scoringEvent === 'VA'
+                  ).length
+                }
+              </p>
+            </div>
+            <div className={'flex flex-row'}>
+              <h1
+                className={
+                  'p-1 bg-slate-900 text-slate-300 grow text-lg font-bold underline italic'
+                }
+              >
+                Challenge Wins
+              </h1>
+              <p className={'p-1 bg-slate-400 text-slate-900 grow text-right'}>
+                {
+                  castaway.scoringEventIds.filter(
+                    (sc) => sc.scoringEvent === 'CW'
+                  ).length
+                }
+              </p>
+            </div>
+            <div className={'flex flex-row'}>
+              <h1
+                className={
+                  'p-1 bg-slate-900 text-slate-300 grow text-lg font-bold underline italic'
+                }
+              >
+                Immunity Wins
+              </h1>
+              <p className={'p-1 bg-slate-400 text-slate-900 grow text-right'}>
+                {
+                  castaway.scoringEventIds.filter(
+                    (sc) => sc.scoringEvent === 'IW'
+                  ).length
+                }
+              </p>
+            </div>
+            <div className={'flex flex-row'}>
+              <h1
+                className={
+                  'p-1 bg-slate-900 text-slate-300 grow text-lg font-bold underline italic'
+                }
+              >
+                Idols Found
+              </h1>
+              <p className={'p-1 bg-slate-400 text-slate-900 grow text-right'}>
+                {
+                  castaway.scoringEventIds.filter(
+                    (sc) => sc.scoringEvent === 'IF'
+                  ).length
+                }
+              </p>
+            </div>
+            <div className={'flex flex-row'}>
+              <h1
+                className={
+                  'p-1 bg-slate-900 text-slate-300 grow text-lg font-bold underline italic'
+                }
+              >
+                Tribal Councils
+              </h1>
+              <p className={'p-1 bg-slate-400 text-slate-900 grow text-right'}>
+                {
+                  castaway.scoringEventIds.filter(
+                    (sc) => sc.scoringEvent === 'TC'
+                  ).length
+                }
+              </p>
+            </div>
+            <div className={'flex flex-row'}>
+              <h1
+                className={
+                  'p-1 bg-green-200 text-green-900 grow text-lg text-center font-bold underline italic rounded-xl hover:cursor-pointer'
+                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  console.log('Add to Team!');
+                }}
+              >
+                Add to Tribe
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};

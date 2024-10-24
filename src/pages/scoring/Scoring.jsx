@@ -162,9 +162,6 @@ const Scoring = () => {
           Add Scoring Record
         </button>
       </form>
-      <button onClick={() => console.log({ seeScoring: scoringRecords })}>
-        See Scoring
-      </button>
       {scoringRecords.map((sc) => {
         const { name } = sc.castawayId ?? '';
 

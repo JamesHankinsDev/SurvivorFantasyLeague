@@ -48,7 +48,7 @@ const Home = () => {
         </div>
         <div className="flex md:flex-row flex-row-reverse h-full">
           <nav
-            className={`text-slate-300 text-xs bg-slate-900 p-4 md:w-44 flex flex-col md:items-start items-end inline text-sm md:sticky fixed md:left-0 md:top-16 bottom-2 right-2 z-10 justify-end md:justify-start rounded w-fit md:border-r-4 border-slate-600 ${
+            className={`text-slate-300 text-xs bg-slate-900 p-4 flex flex-col md:items-start items-end inline text-sm md:sticky fixed md:left-0 md:top-16 bottom-2 right-2 z-10 justify-end md:justify-start rounded w-fit md:border-r-4 border-slate-600 ${
               showNav ? 'opacity-100' : 'opacity-80'
             }`}
           >
