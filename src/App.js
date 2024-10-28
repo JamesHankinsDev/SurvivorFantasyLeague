@@ -14,6 +14,7 @@ import ResetPassword from './pages/ResetPassword/ResetPassword';
 import { SeasonRecap } from './pages/Recaps/SeasonRecap';
 import { ScoringProvider } from './context/ScoringContext';
 import HowItWorks from './pages/HowItWorks/HowItWorks';
+import Chat from './pages/Chat/Chat';
 
 function App() {
   return (
@@ -24,13 +25,13 @@ function App() {
             <Routes>
               <Route path="/login" element={<Landing />} />
               <Route path="/" element={<Home />}>
-                <Route path="/" element={<h1>Login Home</h1>} />
+                <Route path="/" element={<MyTribe />} />
                 <Route path="how-it-works" element={<HowItWorks />} />
                 <Route path="castaways" element={<Castaways />} />
                 <Route path="my-tribe" element={<MyTribe />} />
                 <Route path="leaderboard" element={<Leaderboard />} />
                 <Route path="ep-recap" element={<SeasonRecap />} />
-                <Route path="chat" element={<h1>Chat Feature to come!</h1>} />
+                <Route path="chat" element={<Chat />} />
                 <Route path="log-scoring" element={<Scoring />} />
               </Route>
               <Route path="reset-password/*" element={<ResetPassword />} />

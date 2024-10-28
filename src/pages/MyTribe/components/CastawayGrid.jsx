@@ -134,7 +134,7 @@ export const CastawayGrid = ({ castaways, myTribe, handleModal }) => {
           </option>
         </select>
       </div>
-      <div className="overflow-x-scroll">
+      <div className="overflow-x-scroll md:overflow-x-hidden">
         <table className="table-auto border-collapse border border-slate-500 w-fit">
           <thead>
             <tr>

@@ -77,16 +77,6 @@ const Home = () => {
                   {'<'}
                 </span>
                 <Link
-                  to="/castaways"
-                  onClick={() => setActiveTab('castaways')}
-                  className={`hover:text-white px-4 py-1 my-2 ${
-                    activeTab === 'castaways' &&
-                    'bg-slate-300 text-slate-900 rounded hover:text-slate-900'
-                  }`}
-                >
-                  Castaways
-                </Link>
-                <Link
                   to="/my-tribe"
                   onClick={() => setActiveTab('my-tribe')}
                   className={`hover:text-white px-4 py-1 my-2 ${
@@ -95,6 +85,16 @@ const Home = () => {
                   }`}
                 >
                   My Tribe
+                </Link>
+                <Link
+                  to="/castaways"
+                  onClick={() => setActiveTab('castaways')}
+                  className={`hover:text-white px-4 py-1 my-2 ${
+                    activeTab === 'castaways' &&
+                    'bg-slate-300 text-slate-900 rounded hover:text-slate-900'
+                  }`}
+                >
+                  Castaways
                 </Link>
                 <Link
                   to="/leaderboard"
@@ -106,7 +106,7 @@ const Home = () => {
                 >
                   Leaderboard
                 </Link>
-                <Link
+                {/* <Link
                   to="/chat"
                   onClick={() => setActiveTab('chat')}
                   className={`hover:text-white px-4 py-1 my-2 ${
@@ -115,8 +115,8 @@ const Home = () => {
                   }`}
                 >
                   Chat
-                </Link>
-                <Link
+                </Link> */}
+                {/* <Link
                   to="/ep-recap"
                   onClick={() => setActiveTab('ep-recap')}
                   className={`hover:text-white px-4 py-1 my-2 ${
@@ -125,7 +125,7 @@ const Home = () => {
                   }`}
                 >
                   Recaps
-                </Link>
+                </Link> */}
                 {userRole === 'admin' && (
                   <Link
                     to="/log-scoring"
