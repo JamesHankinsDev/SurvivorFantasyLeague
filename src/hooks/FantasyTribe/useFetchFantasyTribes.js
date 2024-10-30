@@ -5,7 +5,8 @@ import { useAuth } from '../../context/AuthContext';
 
 const useFetchFantasyTribes = () => {
   const { accessToken } = useAuth();
-  const [data, setData] = useState(null);
+  const [myTribe, setMyTribe] = useState(null);
+  const [allTribes, setAllTribes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -15,10 +16,18 @@ const useFetchFantasyTribes = () => {
       const fetchData = async () => {
         setLoading(true);
         try {
-          const response = await axios.get(`${BASE_URI}/api/team`, {
+          const allTribeResponse = await axios.get(`${BASE_URI}/api/team`, {
             headers: { Authorization: accessToken },
           });
-          setData(response.data);
+          const myTribeResponse = await axios.get(
+            `${BASE_URI}/api/team/myTeam`,
+            {
+              headers: { Authorization: accessToken },
+            }
+          );
+
+          setAllTribes(allTribeResponse.data);
+          setMyTribe(myTribeResponse.data);
         } catch (err) {
           setError(err);
         } finally {
@@ -30,7 +39,7 @@ const useFetchFantasyTribes = () => {
     }
   }, [accessToken]);
 
-  return { data, loading, error };
+  return { myTribe, allTribes, loading, error };
 };
 
 export default useFetchFantasyTribes;

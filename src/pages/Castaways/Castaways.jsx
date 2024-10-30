@@ -23,13 +23,17 @@ const Castaways = () => {
         {loading ? (
           <h1>Loading</h1>
         ) : castaways !== null && castaways.length !== 0 ? (
-          castaways.map((c) => (
-            <CastawayCard
-              castaway={c}
-              handleClick={null}
-              key={`castaways__${c._id}`}
-            />
-          ))
+          castaways
+            .sort(
+              (a, b) => a.name.localeCompare(b.name) && a.status.localeCompare
+            )
+            .map((c) => (
+              <CastawayCard
+                castaway={c}
+                handleClick={null}
+                key={`castaways__${c._id}`}
+              />
+            ))
         ) : (
           <></>
         )}

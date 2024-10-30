@@ -1,15 +1,11 @@
-export const MyTribeCastawayCards = ({ castaways }) => {
+export const MyTribeCastawayCards = ({ castaways = [], handleModal }) => {
   return (
-    <div
-      className={
-        'w-full flex flex-row justify-center hover:cursor-pointer flex-wrap'
-      }
-      onClick={() => console.log('Show Player Stats')}
-    >
+    <div className={'w-full flex flex-row justify-center flex-wrap'}>
       {castaways.map((castaway) => (
         <div
-          className={'md:w-48 w-24 px-2 py-1'}
+          className={'md:w-48 w-24 mx-2 py-1 hover:cursor-pointer'}
           key={`my_tribe_castaway_card_${castaway._id}`}
+          onClick={() => handleModal(castaway._id)}
         >
           <img
             className={`w-full rounded-t-xl ${

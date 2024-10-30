@@ -6,8 +6,8 @@ const tableHeadCSS =
 const tableRowCSS =
   'border border-slate-600 bg-slate-400 text-slate-900 px-3 text-xs';
 
-export const CastawayGrid = ({ castaways, myTribe, handleModal }) => {
-  const [castawaysForGrid, setCastawaysForGrid] = useState(castaways ?? []);
+export const CastawayGrid = ({ castaways = [], myTribe = [], handleModal }) => {
+  const [castawaysForGrid, setCastawaysForGrid] = useState(castaways);
   const [sortBy, setSortBy] = useState('Castaway');
   const [hideEliminated, setHideEliminated] = useState(false);
   const [hideMyTribe, setHideMyTribe] = useState(false);
@@ -232,7 +232,6 @@ export const CastawayGrid = ({ castaways, myTribe, handleModal }) => {
                       castaway.status === 'eliminated' ? 'bg-red-300' : ''
                     }`}
                     onClick={() => {
-                      console.log('Huzah!', castaway);
                       handleModal(castaway._id);
                     }}
                   >

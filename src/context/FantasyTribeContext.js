@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import useFetchFantasyTribes from '../hooks/FantasyTribes/useFetchFantasyTribes';
+import useFetchFantasyTribes from '../hooks/FantasyTribe/useFetchFantasyTribes';
 
 const FantasyTribesContext = createContext();
 
@@ -8,22 +8,39 @@ export const useFantasyTribes = () => {
 };
 
 export const FantasyTribesProvider = ({ children }) => {
-  const { data: fantasyTribes, loading, error } = useFetchFantasyTribes();
+  const { allTribes, myTribe, loading, error } = useFetchFantasyTribes();
 
-  const [cachedFantasyTribes, setCachedFantasyTribes] = useState(null);
-  const [shouldRefetch, setShouldRefetch] = useState(false);
+  const [cachedAllTribes, setCachedAllTribes] = useState(null);
+  const [shouldRefetchAllTribes, setShouldRefetchAllTribes] = useState(true);
+
+  const [cachedMyTribe, setCachedMyTribe] = useState(null);
+  const [shouldRefetchMyTribe, setShouldRefetchMyTribe] = useState(true);
 
   useEffect(() => {
-    if ((fantasyTribes && !cachedFantasyTribes) || shouldRefetch) {
-      setCachedFantasyTribes(fantasyTribes);
-      setShouldRefetch(false);
+    if (
+      (allTribes && allTribes.length > 0 && !cachedAllTribes) ||
+      shouldRefetchAllTribes
+    ) {
+      setCachedAllTribes(allTribes);
+      setShouldRefetchAllTribes(false);
     }
-  }, [fantasyTribes, cachedFantasyTribes, shouldRefetch]);
+  }, [allTribes, cachedAllTribes, shouldRefetchAllTribes]);
 
-  const refetch = () => setShouldRefetch(true);
+  useEffect(() => {
+    if ((myTribe && !cachedMyTribe) || shouldRefetchMyTribe) {
+      setCachedMyTribe(myTribe);
+      setShouldRefetchMyTribe(false);
+    }
+  }, [myTribe, cachedMyTribe, shouldRefetchMyTribe]);
+
+  const refetch = () => {
+    setShouldRefetchAllTribes(true);
+    setShouldRefetchMyTribe(true);
+  };
 
   const value = {
-    cachedFantasyTribes,
+    cachedAllTribes,
+    cachedMyTribe,
     loading,
     error,
     refetch,
