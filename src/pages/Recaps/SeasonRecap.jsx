@@ -4,10 +4,10 @@ import { RecapBar } from './components/RecapBar';
 
 export const SeasonRecap = () => {
   const [weeklyScoring, setWeeklyScoring] = useState({});
-  const { cachedScoring: scores, loading, error } = useScoring();
+  const { cachedScoring: scores, loading } = useScoring();
 
   useEffect(() => {
-    if (scores && scores != []) {
+    if (scores && scores.length > 0) {
       scores.forEach((sc) => {
         if (!weeklyScoring[`week_${sc.week}`]) {
           setWeeklyScoring((wksc) => ({
@@ -17,7 +17,7 @@ export const SeasonRecap = () => {
         }
       });
     }
-  }, [scores]);
+  }, [scores, weeklyScoring]);
 
   return (
     <>

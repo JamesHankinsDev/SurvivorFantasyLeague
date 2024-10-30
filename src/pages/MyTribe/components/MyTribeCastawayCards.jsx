@@ -9,7 +9,7 @@ export const MyTribeCastawayCards = ({ castaways }) => {
       {castaways.map((castaway) => (
         <div
           className={'md:w-48 w-24 px-2 py-1'}
-          id={`my_tribe_castaway_card_${castaway._id}`}
+          key={`my_tribe_castaway_card_${castaway._id}`}
         >
           <img
             className={`w-full rounded-t-xl ${

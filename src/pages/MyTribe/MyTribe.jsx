@@ -340,7 +340,7 @@ const MyTribe = () => {
               {localStorage.getItem('role') === 'admin' && (
                 <select
                   className={'md:block hidden'}
-                  value={targetWeek}
+                  value={targetWeek ?? 0}
                   onChange={(e) => setTargetWeek(e.target.value)}
                 >
                   <option value="1">My Fantasy Tribe | Week 1</option>

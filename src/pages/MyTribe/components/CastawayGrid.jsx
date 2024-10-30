@@ -225,7 +225,7 @@ export const CastawayGrid = ({ castaways, myTribe, handleModal }) => {
           </thead>
           <tbody>
             {castawaysForGrid.sort(handleFilterGrid).map((castaway) => (
-              <tr id={`castaway_grid_${castaway._id}`}>
+              <tr key={`castaway_grid_${castaway._id}`}>
                 <td className={tableRowCSS}>
                   <span
                     className={`underline text-blue-700 hover:cursor-pointer ${
