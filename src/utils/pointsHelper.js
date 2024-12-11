@@ -12,6 +12,25 @@ const pointsMap = {
   Frst: { title: 'First', pointValue: 50 },
 };
 
+export const enrichTribe = (tribe) => {
+  return {
+    ...tribe,
+    totalPoints: tribe.fantasyTribes
+      .map((t) => {
+        const week = t.week;
+        const castaways = t.castaways;
+        return castaways
+          .map((c) =>
+            c.scoringEventIds
+              .filter((e) => e.week === week)
+              .reduce((acc, cur) => (acc += cur.points), 0)
+          )
+          .reduce((acc, cur) => (acc += cur), 0);
+      })
+      .reduce((acc, cur) => (acc += cur), 0),
+  };
+};
+
 export const getTranslatedPoints = (scoring, week) => {
   if (week === null) {
     return scoring.map((sc) => pointsMap[sc.scoringEvent]);

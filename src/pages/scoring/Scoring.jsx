@@ -169,7 +169,7 @@ const Scoring = () => {
           <div key={`scoring_record__${sc._id}`}>
             <p>
               {name},{' '}
-              {scoringMap.find((el) => el.code === sc.scoringEvent).title}, Week{' '}
+                {scoringMap.find((el) => el.code === sc.scoringEvent).title}, Week{' '}
               {sc.week} | {sc.points}
             </p>
             <button onClick={() => deleteScoringRecord(sc._id)}>Delete</button>

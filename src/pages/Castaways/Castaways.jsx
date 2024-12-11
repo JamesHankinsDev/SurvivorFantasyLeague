@@ -24,9 +24,8 @@ const Castaways = () => {
           <h1>Loading</h1>
         ) : castaways !== null && castaways.length !== 0 ? (
           castaways
-            .sort(
-              (a, b) => a.name.localeCompare(b.name) && a.status.localeCompare
-            )
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .sort((a, b) => a.status.localeCompare(b.status))
             .map((c) => (
               <CastawayCard
                 castaway={c}

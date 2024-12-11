@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import useFetchFantasyTribes from '../hooks/FantasyTribe/useFetchFantasyTribes';
+import { enrichTribe } from '../utils/pointsHelper';
 
 const FantasyTribesContext = createContext();
 
@@ -10,7 +11,7 @@ export const useFantasyTribes = () => {
 export const FantasyTribesProvider = ({ children }) => {
   const { allTribes, myTribe, loading, error } = useFetchFantasyTribes();
 
-  const [cachedAllTribes, setCachedAllTribes] = useState(null);
+  const [cachedAllTribes, setCachedAllTribes] = useState([]);
   const [shouldRefetchAllTribes, setShouldRefetchAllTribes] = useState(true);
 
   const [cachedMyTribe, setCachedMyTribe] = useState(null);
@@ -18,10 +19,13 @@ export const FantasyTribesProvider = ({ children }) => {
 
   useEffect(() => {
     if (
-      (allTribes && allTribes.length > 0 && !cachedAllTribes) ||
+      (allTribes &&
+        allTribes.length > 0 &&
+        (!cachedAllTribes || cachedAllTribes.length === 0)) ||
       shouldRefetchAllTribes
     ) {
-      setCachedAllTribes(allTribes);
+      const enrichedAllTribes = allTribes.map((tribe) => enrichTribe(tribe));
+      setCachedAllTribes(enrichedAllTribes);
       setShouldRefetchAllTribes(false);
     }
   }, [allTribes, cachedAllTribes, shouldRefetchAllTribes]);

@@ -3,7 +3,7 @@ import { getAPIURI } from '../../utils/API';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 
-const useFetchFantasyTribes = () => {
+const useFetchAllFantasyTribes = () => {
   const { accessToken } = useAuth();
   const [myTribe, setMyTribe] = useState(null);
   const [allTribes, setAllTribes] = useState([]);
@@ -25,9 +25,8 @@ const useFetchFantasyTribes = () => {
               headers: { Authorization: accessToken },
             }
           );
-
-          setAllTribes(allTribeResponse.data);
-          setMyTribe(myTribeResponse.data);
+          await setAllTribes(allTribeResponse.data);
+          await setMyTribe(myTribeResponse.data);
         } catch (err) {
           setError(err);
         } finally {
@@ -42,4 +41,4 @@ const useFetchFantasyTribes = () => {
   return { myTribe, allTribes, loading, error };
 };
 
-export default useFetchFantasyTribes;
+export default useFetchAllFantasyTribes;
